@@ -1,20 +1,21 @@
 /* Color Flow – Water Sort Puzzle 
-   Modern, Fluid, Mobile-First Stylesheet */
+   Modern, Highly Responsive, Pure Casual Puzzle Stylesheet */
 
 :root {
   --bg-gradient: linear-gradient(135deg, #07192f 0%, #0c2d48 50%, #145da0 100%);
   --accent-color: #38bdf8;
   --accent-glow: rgba(56, 189, 248, 0.45);
-  --glass-tint: rgba(255, 255, 255, 0.12);
-  --glass-border: rgba(255, 255, 255, 0.3);
-  --text-primary: #f8fafc;
+  --glass-bg: rgba(255, 255, 255, 0.1);
+  --glass-border: rgba(255, 255, 255, 0.35);
+  --glass-highlight: rgba(255, 255, 255, 0.7);
+  --text-main: #f8fafc;
   --text-muted: #94a3b8;
-  --card-bg: rgba(15, 23, 42, 0.85);
+  --card-bg: rgba(15, 23, 42, 0.92);
   --safe-top: env(safe-area-inset-top, 0px);
   --safe-bottom: env(safe-area-inset-bottom, 0px);
 }
 
-/* Global Reset */
+/* Global Reset & Strict Mobile Touch Constraints */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -22,6 +23,7 @@
   -webkit-tap-highlight-color: transparent;
   user-select: none;
   -webkit-user-select: none;
+  -webkit-touch-callout: none;
 }
 
 html, body {
@@ -29,12 +31,12 @@ html, body {
   height: 100%;
   overflow: hidden;
   background-color: #050b14;
-  color: var(--text-primary);
+  color: var(--text-main);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   touch-action: manipulation;
 }
 
-/* FX / Particles Canvas */
+/* Canvas Overlay for Celebrations */
 #fx-canvas {
   position: fixed;
   inset: 0;
@@ -55,7 +57,8 @@ html, body {
   flex-direction: column;
   background: var(--bg-gradient);
   transition: background 0.7s cubic-bezier(0.4, 0, 0.2, 1);
-  padding: calc(var(--safe-top) + 10px) 14px calc(var(--safe-bottom) + 12px) 14px;
+  padding: calc(var(--safe-top) + 8px) 12px calc(var(--safe-bottom) + 10px) 12px;
+  overflow: hidden;
 }
 
 /* ==========================================================================
@@ -66,7 +69,8 @@ html, body {
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  padding-bottom: 8px;
+  padding-bottom: 6px;
+  flex-shrink: 0;
 }
 
 .top-bar-left, .top-bar-right {
@@ -75,36 +79,42 @@ html, body {
   gap: 8px;
 }
 
-.ctrl-btn {
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
-  background: rgba(15, 23, 42, 0.7);
-  border: 1px solid rgba(255, 255, 255, 0.18);
+.btn-ctrl {
+  width: 42px;
+  height: 42px;
+  border-radius: 13px;
+  background: rgba(15, 23, 42, 0.75);
+  border: 1.5px solid rgba(255, 255, 255, 0.16);
   color: #ffffff;
-  font-size: 1.15rem;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: transform 0.15s, background 0.15s;
+  touch-action: manipulation;
+  transition: transform 0.12s, background 0.12s;
 }
 
-.ctrl-btn:active {
+.btn-ctrl:active {
   transform: scale(0.92);
   background: rgba(255, 255, 255, 0.2);
+}
+
+.ctrl-icon {
+  font-size: 1.25rem;
+  line-height: 1;
 }
 
 .level-meta {
   text-align: center;
 }
 
-.game-brand-title {
-  font-size: 0.68rem;
-  font-weight: 800;
-  letter-spacing: 2px;
+.brand-title {
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 2.5px;
   color: var(--accent-color);
-  opacity: 0.9;
+  opacity: 0.95;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
 }
 
 .level-badge {
@@ -112,10 +122,10 @@ html, body {
   font-weight: 900;
   letter-spacing: 0.5px;
   color: #ffffff;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
 }
 
-.world-theme-name {
+.world-tag {
   font-size: 0.72rem;
   font-weight: 700;
   color: #facc15;
@@ -126,9 +136,9 @@ html, body {
   margin-top: 2px;
 }
 
-.moves-counter-pill {
-  background: rgba(15, 23, 42, 0.7);
-  border: 1px solid rgba(255, 255, 255, 0.16);
+.moves-badge {
+  background: rgba(15, 23, 42, 0.75);
+  border: 1.5px solid rgba(255, 255, 255, 0.16);
   border-radius: 14px;
   padding: 4px 10px;
   display: flex;
@@ -137,70 +147,112 @@ html, body {
   min-width: 58px;
 }
 
-.pill-label {
+.moves-label {
   font-size: 0.58rem;
   font-weight: 800;
   color: var(--text-muted);
   letter-spacing: 0.5px;
 }
 
-.pill-number {
-  font-size: 1.1rem;
+.moves-count {
+  font-size: 1.15rem;
   font-weight: 900;
   color: #ffffff;
+  line-height: 1.1;
 }
 
-/* Quick Action Bar (Undo, Restart, Info) */
-.quick-action-bar {
+/* ==========================================================================
+   QUICK ACTION CONTROLS (UNDO, RESTART, RULES)
+   ========================================================================== */
+.action-bar {
   display: flex;
   justify-content: center;
-  gap: 12px;
-  margin: 6px 0 12px 0;
+  gap: 10px;
+  margin: 4px 0 8px 0;
+  flex-shrink: 0;
 }
 
-.action-btn {
+.btn-action {
   flex: 1;
   max-width: 120px;
   height: 38px;
   border-radius: 12px;
-  background: rgba(15, 23, 42, 0.65);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  color: var(--text-primary);
+  background: rgba(15, 23, 42, 0.7);
+  border: 1.5px solid rgba(255, 255, 255, 0.16);
+  color: var(--text-main);
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 6px;
-  font-size: 0.85rem;
-  font-weight: 700;
+  font-size: 0.86rem;
+  font-weight: 800;
   cursor: pointer;
-  transition: transform 0.15s, background 0.15s, border-color 0.15s;
+  touch-action: manipulation;
+  transition: transform 0.12s, background 0.12s, border-color 0.12s;
 }
 
-.action-btn:active {
-  transform: scale(0.95);
+.btn-action:active {
+  transform: scale(0.94);
   background: rgba(56, 189, 248, 0.2);
   border-color: var(--accent-color);
 }
 
-.action-icon {
+.act-icon {
   font-size: 1.1rem;
 }
 
+/* Guidance Toast */
+.status-banner-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 30px;
+  margin-bottom: 4px;
+  flex-shrink: 0;
+}
+
+.toast-message {
+  display: inline-block;
+  padding: 5px 16px;
+  background: rgba(15, 23, 42, 0.8);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-main);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.toast-message.error {
+  color: #f87171;
+  border-color: #ef4444;
+  animation: shakeToast 0.35s ease-in-out;
+}
+
+@keyframes shakeToast {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+}
+
 /* ==========================================================================
-   MAIN PUZZLE BOARD & BOTTLES VIEWPORT
+   MAIN GAME BOARD & BOTTLES VIEWPORT
    ========================================================================== */
-.board-viewport {
+.board-area {
   flex: 1;
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: visible;
   width: 100%;
+  min-height: 280px;
+  overflow: visible;
 }
 
-/* Pipe Stream Connecting Line Overlay */
-.pipe-stream-overlay {
+/* SVG Pipe Stream Overlay connecting bottle mouths during pour */
+.pour-stream-svg {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -209,114 +261,142 @@ html, body {
   z-index: 50;
 }
 
-.flow-stream-path {
+.stream-path {
   fill: none;
   stroke-linecap: round;
-  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.4));
-  animation: flowDash 0.6s linear infinite;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.5));
+  animation: streamDash 0.5s linear infinite;
 }
 
-@keyframes flowDash {
-  to { stroke-dashoffset: -40; }
+@keyframes streamDash {
+  to { stroke-dashoffset: -32; }
 }
 
-/* Bottles Container Grid */
-.bottles-stage {
+/* Bottles Grid Container */
+.bottles-container {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: 20px 14px;
+  gap: 22px 14px;
   width: 100%;
   max-height: 100%;
-  padding: 10px 0;
   z-index: 10;
 }
 
 /* ==========================================================================
-   INDIVIDUAL GLASS BOTTLE COMPONENT
+   INDIVIDUAL GLASS BOTTLE
    ========================================================================== */
-.bottle-wrapper {
+.bottle-node {
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   cursor: pointer;
+  touch-action: manipulation;
   transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.25s;
   will-change: transform;
 }
 
-/* Selection & States */
-.bottle-wrapper.selected {
-  transform: translateY(-20px);
-  filter: drop-shadow(0 12px 20px var(--accent-glow));
+/* Number Label under the bottle */
+.bottle-label {
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: var(--text-muted);
+  margin-top: 6px;
+  letter-spacing: 0.5px;
+  transition: color 0.2s;
 }
 
-.bottle-wrapper.valid-target {
-  animation: targetPulse 1.2s infinite alternate ease-in-out;
+/* Selected Bottle State: Lifts up and glows */
+.bottle-node.selected {
+  transform: translateY(-24px);
+  filter: drop-shadow(0 14px 22px var(--accent-glow));
 }
 
-@keyframes targetPulse {
-  0% { transform: translateY(0); filter: drop-shadow(0 0 4px rgba(16, 185, 129, 0.4)); }
-  100% { transform: translateY(-4px); filter: drop-shadow(0 0 14px rgba(16, 185, 129, 0.8)); }
+.bottle-node.selected .bottle-label {
+  color: var(--accent-color);
+  font-weight: 900;
 }
 
-.bottle-wrapper.completed .bottle-glass {
-  border-color: #facc15;
-  box-shadow: 0 0 15px rgba(250, 204, 21, 0.5), inset 0 0 10px rgba(250, 204, 21, 0.3);
+/* Valid Target Destination: Soft green pulse */
+.bottle-node.valid-target {
+  animation: targetGlow 1.2s infinite alternate ease-in-out;
 }
 
-/* Pouring Tilts */
-.bottle-wrapper.tilting-left {
-  transform: translateY(-24px) rotate(-40deg);
+@keyframes targetGlow {
+  0% { filter: drop-shadow(0 0 3px rgba(16, 185, 129, 0.4)); }
+  100% { filter: drop-shadow(0 0 16px rgba(16, 185, 129, 0.9)); }
+}
+
+/* Invalid Target Click Shake */
+.bottle-node.shake-invalid {
+  animation: shakeInvalid 0.4s ease-in-out;
+}
+
+@keyframes shakeInvalid {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-8px); }
+  40%, 80% { transform: translateX(8px); }
+}
+
+/* Pouring Tilt States */
+.bottle-node.tilting-left {
+  transform: translateY(-26px) rotate(-42deg);
   transform-origin: top left;
 }
 
-.bottle-wrapper.tilting-right {
-  transform: translateY(-24px) rotate(40deg);
+.bottle-node.tilting-right {
+  transform: translateY(-26px) rotate(42deg);
   transform-origin: top right;
+}
+
+/* Completed Bottle Sealed Golden Glow */
+.bottle-node.completed .bottle-glass {
+  border-color: #facc15;
+  box-shadow: 0 0 18px rgba(250, 204, 21, 0.5), inset 0 0 12px rgba(250, 204, 21, 0.35);
+}
+
+.bottle-node.completed .bottle-cap {
+  background: linear-gradient(180deg, #facc15, #ca8a04);
+  border: 1px solid #fef08a;
+  transform: translateY(0);
 }
 
 /* Bottle Cap / Stopper */
 .bottle-cap {
-  width: 32px;
+  width: 34px;
   height: 10px;
   background: linear-gradient(180deg, #d97706, #92400e);
   border-radius: 4px 4px 1px 1px;
   margin-bottom: -2px;
   z-index: 5;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
-  transition: transform 0.3s ease, opacity 0.3s;
+  transition: transform 0.3s ease, background 0.3s;
 }
 
-.bottle-wrapper.selected .bottle-cap {
-  transform: translateY(-8px);
+.bottle-node.selected .bottle-cap {
+  transform: translateY(-9px);
 }
 
-.bottle-wrapper.completed .bottle-cap {
-  background: linear-gradient(180deg, #facc15, #ca8a04);
-  border: 1px solid #fef08a;
-  transform: translateY(0);
-}
-
-/* Glass Vessel */
+/* Glass Tube Vessel */
 .bottle-glass {
   position: relative;
-  width: 58px;
-  height: 170px;
-  background: var(--glass-tint);
-  backdrop-filter: blur(5px);
+  width: 60px;
+  height: 176px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(6px);
   border: 2.5px solid var(--glass-border);
   border-top: none;
-  border-radius: 0 0 26px 26px;
+  border-radius: 0 0 28px 28px;
   overflow: hidden;
   display: flex;
   flex-direction: column-reverse;
-  box-shadow: inset 0 0 14px rgba(255, 255, 255, 0.15), 0 8px 24px rgba(0, 0, 0, 0.4);
+  box-shadow: inset 0 0 16px rgba(255, 255, 255, 0.12), 0 10px 26px rgba(0, 0, 0, 0.45);
   transition: border-color 0.3s, box-shadow 0.3s;
 }
 
-/* Lip of the Bottle */
+/* Glass Mouth Lip */
 .bottle-glass::before {
   content: "";
   position: absolute;
@@ -324,35 +404,36 @@ html, body {
   left: -2px;
   right: -2px;
   height: 6px;
-  background: rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.3);
   border-radius: 4px;
 }
 
-/* Specular Glass Highlight Glare */
+/* Vertical Specular Glass Highlight Glare */
 .bottle-glass::after {
   content: "";
   position: absolute;
   top: 4px;
-  left: 5px;
+  left: 6px;
   width: 6px;
-  height: calc(100% - 16px);
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.05));
+  height: calc(100% - 18px);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.65), rgba(255, 255, 255, 0.05));
   border-radius: 4px;
   pointer-events: none;
   z-index: 20;
 }
 
-/* Liquid Layer Segments */
-.liquid-segment {
+/* Liquid Layer Segment */
+.liquid-layer {
   width: 100%;
   height: 25%;
   position: relative;
-  transition: height 0.35s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s;
   box-shadow: inset 0 -3px 6px rgba(0, 0, 0, 0.25);
+  transition: height 0.38s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
 }
 
-/* Top Meniscus Curve on topmost layer */
-.liquid-segment.top-meniscus::before {
+/* Meniscus Curve on the topmost liquid layer */
+.liquid-layer.top-layer::before {
   content: "";
   position: absolute;
   top: -3px;
@@ -360,76 +441,68 @@ html, body {
   width: 100%;
   height: 6px;
   background: inherit;
-  filter: brightness(1.2);
+  filter: brightness(1.22);
   border-radius: 50%;
   box-shadow: inset 0 1px 3px rgba(255, 255, 255, 0.4);
   z-index: 10;
 }
 
-/* Internal Bubbles Animation */
-.bubble {
+/* Floating Bubbles */
+.bubble-dot {
   position: absolute;
-  background: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.5);
   border-radius: 50%;
   pointer-events: none;
-  animation: floatBubble 2s infinite ease-in;
+  animation: floatBubble 2.2s infinite ease-in;
 }
 
 @keyframes floatBubble {
   0% { transform: translateY(0) scale(0.6); opacity: 0; }
-  50% { opacity: 0.8; }
-  100% { transform: translateY(-30px) scale(1.1); opacity: 0; }
+  50% { opacity: 0.85; }
+  100% { transform: translateY(-28px) scale(1.1); opacity: 0; }
 }
 
-/* Completed Bottle Star Flare */
-.completed-badge {
+/* Completed Bottle Trophy / Star Flare */
+.complete-star {
   position: absolute;
-  top: 40%;
+  top: 42%;
   left: 50%;
   transform: translate(-50%, -50%) scale(0);
   font-size: 1.8rem;
   color: #facc15;
-  filter: drop-shadow(0 0 10px #facc15);
+  filter: drop-shadow(0 0 12px #facc15);
   pointer-events: none;
   z-index: 30;
-  animation: popBadge 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  animation: starPop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
 }
 
-@keyframes popBadge {
+@keyframes starPop {
   0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
   60% { transform: translate(-50%, -50%) scale(1.3); opacity: 1; }
   100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
 }
 
-/* ==========================================================================
-   BOTTOM GUIDANCE BAR
-   ========================================================================== */
-.bottom-guidance-bar {
+/* Footer */
+.game-footer {
   width: 100%;
   text-align: center;
-  padding: 8px 0;
+  padding-top: 4px;
+  flex-shrink: 0;
 }
 
-.instruction-box {
-  display: inline-block;
-  padding: 8px 18px;
-  background: rgba(15, 23, 42, 0.7);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 20px;
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+.footer-tip {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  opacity: 0.85;
 }
 
 /* ==========================================================================
-   MODAL DIALOGS
+   MODAL OVERLAYS (VICTORY, 100 LEVELS, HOW TO PLAY)
    ========================================================================== */
-.modal-backdrop {
+.modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.82);
+  background: rgba(0, 0, 0, 0.84);
   backdrop-filter: blur(8px);
   display: none;
   align-items: center;
@@ -438,11 +511,11 @@ html, body {
   z-index: 200;
 }
 
-.modal-backdrop.active {
+.modal-overlay.active {
   display: flex;
 }
 
-.modal-dialog {
+.modal-card {
   width: 100%;
   max-width: 380px;
   background: var(--card-bg);
@@ -450,32 +523,32 @@ html, body {
   border-radius: 24px;
   padding: 22px 18px;
   text-align: center;
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.75);
-  animation: modalScale 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.8);
+  animation: modalPop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-@keyframes modalScale {
+@keyframes modalPop {
   0% { transform: scale(0.8); opacity: 0; }
   100% { transform: scale(1); opacity: 1; }
 }
 
-.trophy-bounce {
+.trophy-icon {
   font-size: 3.5rem;
-  animation: trophyHop 2s infinite ease-in-out;
+  animation: hopTrophy 2s infinite ease-in-out;
 }
 
-@keyframes trophyHop {
+@keyframes hopTrophy {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-8px); }
 }
 
-.dialog-title {
+.modal-title {
   font-size: 1.6rem;
   font-weight: 900;
   color: #ffffff;
 }
 
-.star-rating-row {
+.stars-row {
   font-size: 2.2rem;
   margin: 10px 0;
   display: flex;
@@ -483,12 +556,8 @@ html, body {
   gap: 8px;
 }
 
-.star-icon {
-  filter: drop-shadow(0 2px 8px rgba(250, 204, 21, 0.5));
-}
-
-.victory-details-card {
-  background: rgba(30, 41, 59, 0.6);
+.stat-box {
+  background: rgba(30, 41, 59, 0.65);
   border-radius: 14px;
   padding: 12px 16px;
   margin: 12px 0 16px 0;
@@ -497,19 +566,19 @@ html, body {
   gap: 8px;
 }
 
-.v-row {
+.stat-line {
   display: flex;
   justify-content: space-between;
   font-size: 0.92rem;
 }
 
-.dialog-actions {
+.modal-buttons {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
-.btn-primary {
+.btn-main-action {
   width: 100%;
   height: 52px;
   border-radius: 16px;
@@ -521,53 +590,53 @@ html, body {
   letter-spacing: 0.5px;
   cursor: pointer;
   box-shadow: 0 8px 24px rgba(2, 132, 199, 0.45);
-  transition: transform 0.15s, box-shadow 0.15s;
+  transition: transform 0.12s;
 }
 
-.btn-primary:active {
+.btn-main-action:active {
   transform: scale(0.96);
 }
 
-.dialog-sub-actions {
+.modal-sub-buttons {
   display: flex;
   gap: 8px;
 }
 
-.btn-secondary {
+.btn-sub-action {
   flex: 1;
   height: 42px;
   border-radius: 12px;
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.15);
-  color: var(--text-primary);
+  color: var(--text-main);
   font-size: 0.88rem;
-  font-weight: 700;
+  font-weight: 800;
   cursor: pointer;
 }
 
 /* ==========================================================================
    LEVELS MODAL (1 TO 100)
    ========================================================================== */
-.levels-dialog {
+.levels-card {
   max-height: 85vh;
   display: flex;
   flex-direction: column;
   padding: 16px;
 }
 
-.modal-head {
+.modal-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 12px;
 }
 
-.modal-head-title {
-  font-size: 1.1rem;
+.modal-header-title {
+  font-size: 1.15rem;
   font-weight: 800;
 }
 
-.btn-close-modal {
+.btn-close-x {
   background: none;
   border: none;
   color: var(--text-muted);
@@ -575,7 +644,7 @@ html, body {
   cursor: pointer;
 }
 
-.world-tabs-scroller {
+.world-tabs-bar {
   display: flex;
   gap: 6px;
   overflow-x: auto;
@@ -584,11 +653,11 @@ html, body {
   scrollbar-width: none;
 }
 
-.world-tabs-scroller::-webkit-scrollbar {
+.world-tabs-bar::-webkit-scrollbar {
   display: none;
 }
 
-.world-tab-btn {
+.tab-btn {
   flex-shrink: 0;
   padding: 6px 12px;
   border-radius: 16px;
@@ -601,29 +670,28 @@ html, body {
   white-space: nowrap;
 }
 
-.world-tab-btn.active {
+.tab-btn.active {
   background: var(--accent-color);
   color: #041226;
   border-color: #ffffff;
 }
 
-.levels-scroll-container {
+.levels-scroll-area {
   flex: 1;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
   gap: 14px;
-  padding-right: 2px;
 }
 
-.world-level-group {
+.world-block {
   background: rgba(15, 23, 42, 0.55);
   border-radius: 16px;
   padding: 12px;
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.world-group-heading {
+.world-block-head {
   display: flex;
   justify-content: space-between;
   font-size: 0.82rem;
@@ -631,18 +699,18 @@ html, body {
   margin-bottom: 10px;
 }
 
-.lvl-grid-5 {
+.levels-grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 8px;
 }
 
-.lvl-tile {
+.level-cell {
   aspect-ratio: 1;
   border-radius: 12px;
   background: rgba(30, 41, 59, 0.7);
   border: 1.5px solid rgba(255, 255, 255, 0.1);
-  color: var(--text-primary);
+  color: var(--text-main);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -650,39 +718,39 @@ html, body {
   font-size: 0.95rem;
   font-weight: 800;
   cursor: pointer;
-  transition: transform 0.15s, border-color 0.15s;
+  transition: transform 0.12s, border-color 0.12s;
 }
 
-.lvl-tile:active {
+.level-cell:active {
   transform: scale(0.92);
 }
 
-.lvl-tile.completed {
+.level-cell.completed {
   background: linear-gradient(135deg, rgba(16, 185, 129, 0.3), rgba(6, 182, 212, 0.3));
   border-color: #10b981;
 }
 
-.lvl-tile.current {
+.level-cell.current {
   border-color: #f59e0b;
   box-shadow: 0 0 12px rgba(245, 158, 11, 0.6);
 }
 
-.lvl-tile.locked {
+.level-cell.locked {
   opacity: 0.45;
   cursor: not-allowed;
   border-color: rgba(255, 255, 255, 0.05);
 }
 
-.lvl-substars {
+.lvl-stars-mini {
   font-size: 0.52rem;
   margin-top: 2px;
   letter-spacing: -1px;
 }
 
 /* ==========================================================================
-   RULES DIALOG
+   RULES MODAL
    ========================================================================== */
-.rules-body {
+.rules-content {
   text-align: left;
   display: flex;
   flex-direction: column;
@@ -690,45 +758,45 @@ html, body {
   margin-bottom: 16px;
 }
 
-.rule-item {
+.rule-box {
   display: flex;
   align-items: flex-start;
   gap: 12px;
-  background: rgba(30, 41, 59, 0.5);
+  background: rgba(30, 41, 59, 0.55);
   padding: 10px;
   border-radius: 12px;
 }
 
-.rule-icon {
+.r-icon {
   font-size: 1.5rem;
   line-height: 1;
 }
 
-.rule-desc {
+.rule-box p {
   font-size: 0.8rem;
-  line-height: 1.4;
+  line-height: 1.35;
   color: var(--text-muted);
+  margin-top: 2px;
 }
 
-.rule-desc strong {
+.rule-box strong {
+  font-size: 0.86rem;
   color: #ffffff;
 }
 
-/* ==========================================================================
-   GRAND MASTER WINNER CELEBRATION
-   ========================================================================== */
-.grand-dialog {
+/* Grand Master Modal */
+.grand-card {
   border-color: #facc15;
   background: linear-gradient(135deg, #1e1b4b 0%, #311042 100%);
   box-shadow: 0 0 50px rgba(250, 204, 21, 0.5);
 }
 
-.crown-glow {
+.crown-icon {
   font-size: 4rem;
-  animation: crownFloat 2s infinite ease-in-out;
+  animation: floatCrown 2s infinite ease-in-out;
 }
 
-@keyframes crownFloat {
+@keyframes floatCrown {
   0%, 100% { transform: translateY(0) rotate(-3deg); }
   50% { transform: translateY(-8px) rotate(3deg); }
 }
@@ -738,7 +806,7 @@ html, body {
   text-shadow: 0 0 15px rgba(250, 204, 21, 0.6);
 }
 
-.master-subtitle {
+.grand-badge {
   font-size: 1.15rem;
   font-weight: 900;
   color: #fde047;
@@ -746,7 +814,7 @@ html, body {
   margin: 6px 0;
 }
 
-.master-message {
+.grand-desc {
   font-size: 0.88rem;
   color: #e2e8f0;
   line-height: 1.4;

@@ -1,6 +1,6 @@
 /**
  * Color Flow – Water Sort Puzzle (100 Levels)
- * Complete, Solvable, Beautiful Water Sort Engine
+ * Real Water Sort Mechanics, Guaranteed Solvability, Visible Fluid Pour Animation
  */
 
 (function () {
@@ -10,42 +10,42 @@
   const FLUID_COLORS = {
     c1:  { name: 'Sky Blue', hex: '#0ea5e9' },
     c2:  { name: 'Ocean Cyan', hex: '#06b6d4' },
-    c3:  { name: 'Emerald', hex: '#10b981' },
-    c4:  { name: 'Sunshine', hex: '#eab308' },
-    c5:  { name: 'Crimson', hex: '#ef4444' },
+    c3:  { name: 'Emerald Green', hex: '#10b981' },
+    c4:  { name: 'Sunshine Yellow', hex: '#eab308' },
+    c5:  { name: 'Crimson Red', hex: '#ef4444' },
     c6:  { name: 'Royal Purple', hex: '#8b5cf6' },
     c7:  { name: 'Hot Pink', hex: '#ec4899' },
     c8:  { name: 'Tangy Orange', hex: '#f97316' },
-    c9:  { name: 'Lime', hex: '#84cc16' },
+    c9:  { name: 'Lime Green', hex: '#84cc16' },
     c10: { name: 'Amber Gold', hex: '#f59e0b' },
-    c11: { name: 'Indigo', hex: '#6366f1' },
-    c12: { name: 'Coral', hex: '#fb7185' }
+    c11: { name: 'Deep Indigo', hex: '#6366f1' },
+    c12: { name: 'Coral Pink', hex: '#fb7185' }
   };
 
   const COLOR_KEYS = Object.keys(FLUID_COLORS);
 
-  // --- THE 20 PROGRESSIVE WORLD THEMES ---
+  // --- 20 UNIQUE WORLD THEMES ---
   const WORLDS = [
-    { id: 1,  name: 'Clean Aqua', icon: '💧', bg: 'linear-gradient(135deg, #07192f 0%, #0c2d48 50%, #145da0 100%)', cap: 'cork', accent: '#38bdf8' },
-    { id: 2,  name: 'Pipe Water', icon: '🚰', bg: 'linear-gradient(135deg, #1e293b 0%, #0f172a 50%, #0284c7 100%)', cap: 'pipe', accent: '#0284c7' },
-    { id: 3,  name: 'Water + Pipe Mix', icon: '⚙️💧', bg: 'linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0369a1 100%)', cap: 'pipe', accent: '#38bdf8' },
-    { id: 4,  name: 'Screw Cap Flasks', icon: '🔩', bg: 'linear-gradient(135deg, #1c1917 0%, #292524 50%, #78350f 100%)', cap: 'screw', accent: '#f59e0b' },
-    { id: 5,  name: 'Water + Screw Mix', icon: '🔩💧', bg: 'linear-gradient(135deg, #18181b 0%, #27272a 50%, #0284c7 100%)', cap: 'screw', accent: '#38bdf8' },
-    { id: 6,  name: 'Ice Water', icon: '❄️', bg: 'linear-gradient(135deg, #082f49 0%, #0c4a6e 50%, #38bdf8 100%)', cap: 'ice', accent: '#7dd3fc' },
-    { id: 7,  name: 'Fire + Water', icon: '🔥💧', bg: 'linear-gradient(135deg, #450a0a 0%, #1e293b 50%, #0369a1 100%)', cap: 'cork', accent: '#f87171' },
-    { id: 8,  name: 'Rain Forest', icon: '🍃', bg: 'linear-gradient(135deg, #052e16 0%, #064e3b 50%, #14532d 100%)', cap: 'leaf', accent: '#34d399' },
-    { id: 9,  name: 'Desert Oasis', icon: '🏜️', bg: 'linear-gradient(135deg, #451a03 0%, #78350f 50%, #0891b2 100%)', cap: 'cork', accent: '#fbbf24' },
-    { id: 10, name: 'Candy Liquid', icon: '🍭', bg: 'linear-gradient(135deg, #4a044e 0%, #701a75 50%, #ec4899 100%)', cap: 'candy', accent: '#f472b6' },
-    { id: 11, name: 'Rainbow Water', icon: '🌈', bg: 'linear-gradient(135deg, #1e1b4b 0%, #311042 50%, #4a044e 100%)', cap: 'gold', accent: '#facc15' },
-    { id: 12, name: 'Space Tubes', icon: '🪐', bg: 'linear-gradient(135deg, #09090b 0%, #18181b 50%, #3b0764 100%)', cap: 'energy', accent: '#a855f7' },
-    { id: 13, name: 'Space + Water Mix', icon: '🚀💧', bg: 'linear-gradient(135deg, #111827 0%, #1e1b4b 50%, #0369a1 100%)', cap: 'energy', accent: '#38bdf8' },
-    { id: 14, name: 'Magic Bottles', icon: '🔮', bg: 'linear-gradient(135deg, #2e1065 0%, #3b0764 50%, #6b21a8 100%)', cap: 'crystal', accent: '#c084fc' },
-    { id: 15, name: 'Floating Waves', icon: '🌊', bg: 'linear-gradient(135deg, #0369a1 0%, #075985 50%, #0284c7 100%)', cap: 'cork', accent: '#67e8f9' },
-    { id: 16, name: 'Rotating Pipe World', icon: '🔄', bg: 'linear-gradient(135deg, #1f2937 0%, #374151 50%, #4b5563 100%)', cap: 'pipe', accent: '#9ca3af' },
-    { id: 17, name: 'Cyber Neon Tubes', icon: '⚡', bg: 'linear-gradient(135deg, #030712 0%, #111827 50%, #064e3b 100%)', cap: 'neon', accent: '#10b981' },
-    { id: 18, name: 'Crystal Flasks', icon: '💎', bg: 'linear-gradient(135deg, #1e1b4b 0%, #2e1065 50%, #312e81 100%)', cap: 'crystal', accent: '#818cf8' },
-    { id: 19, name: 'Master Laboratory', icon: '🧪', bg: 'linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%)', cap: 'screw', accent: '#38bdf8' },
-    { id: 20, name: 'Grand Master Flow', icon: '👑', bg: 'linear-gradient(135deg, #1e1b4b 0%, #311042 50%, #701a75 100%)', cap: 'gold', accent: '#facc15' }
+    { id: 1,  name: 'Clean Aqua', icon: '💧', bg: 'linear-gradient(135deg, #07192f 0%, #0c2d48 50%, #145da0 100%)', accent: '#38bdf8' },
+    { id: 2,  name: 'Pipe Water', icon: '🚰', bg: 'linear-gradient(135deg, #1e293b 0%, #0f172a 50%, #0284c7 100%)', accent: '#0284c7' },
+    { id: 3,  name: 'Water + Pipe Mix', icon: '⚙️💧', bg: 'linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0369a1 100%)', accent: '#38bdf8' },
+    { id: 4,  name: 'Screw Cap Flasks', icon: '🔩', bg: 'linear-gradient(135deg, #1c1917 0%, #292524 50%, #78350f 100%)', accent: '#f59e0b' },
+    { id: 5,  name: 'Water + Screw Mix', icon: '🔩💧', bg: 'linear-gradient(135deg, #18181b 0%, #27272a 50%, #0284c7 100%)', accent: '#38bdf8' },
+    { id: 6,  name: 'Ice Water', icon: '❄️', bg: 'linear-gradient(135deg, #082f49 0%, #0c4a6e 50%, #38bdf8 100%)', accent: '#7dd3fc' },
+    { id: 7,  name: 'Fire + Water', icon: '🔥💧', bg: 'linear-gradient(135deg, #450a0a 0%, #1e293b 50%, #0369a1 100%)', accent: '#f87171' },
+    { id: 8,  name: 'Rain Forest', icon: '🍃', bg: 'linear-gradient(135deg, #052e16 0%, #064e3b 50%, #14532d 100%)', accent: '#34d399' },
+    { id: 9,  name: 'Desert Oasis', icon: '🏜️', bg: 'linear-gradient(135deg, #451a03 0%, #78350f 50%, #0891b2 100%)', accent: '#fbbf24' },
+    { id: 10, name: 'Candy Liquid', icon: '🍭', bg: 'linear-gradient(135deg, #4a044e 0%, #701a75 50%, #ec4899 100%)', accent: '#f472b6' },
+    { id: 11, name: 'Rainbow Water', icon: '🌈', bg: 'linear-gradient(135deg, #1e1b4b 0%, #311042 50%, #4a044e 100%)', accent: '#facc15' },
+    { id: 12, name: 'Space Tubes', icon: '🪐', bg: 'linear-gradient(135deg, #09090b 0%, #18181b 50%, #3b0764 100%)', accent: '#a855f7' },
+    { id: 13, name: 'Space + Water Mix', icon: '🚀💧', bg: 'linear-gradient(135deg, #111827 0%, #1e1b4b 50%, #0369a1 100%)', accent: '#38bdf8' },
+    { id: 14, name: 'Magic Bottles', icon: '🔮', bg: 'linear-gradient(135deg, #2e1065 0%, #3b0764 50%, #6b21a8 100%)', accent: '#c084fc' },
+    { id: 15, name: 'Floating Waves', icon: '🌊', bg: 'linear-gradient(135deg, #0369a1 0%, #075985 50%, #0284c7 100%)', accent: '#67e8f9' },
+    { id: 16, name: 'Rotating Pipe World', icon: '🔄', bg: 'linear-gradient(135deg, #1f2937 0%, #374151 50%, #4b5563 100%)', accent: '#9ca3af' },
+    { id: 17, name: 'Cyber Neon Tubes', icon: '⚡', bg: 'linear-gradient(135deg, #030712 0%, #111827 50%, #064e3b 100%)', accent: '#10b981' },
+    { id: 18, name: 'Crystal Flasks', icon: '💎', bg: 'linear-gradient(135deg, #1e1b4b 0%, #2e1065 50%, #312e81 100%)', accent: '#818cf8' },
+    { id: 19, name: 'Master Laboratory', icon: '🧪', bg: 'linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%)', accent: '#38bdf8' },
+    { id: 20, name: 'Grand Master Flow', icon: '👑', bg: 'linear-gradient(135deg, #1e1b4b 0%, #311042 50%, #701a75 100%)', accent: '#facc15' }
   ];
 
   // --- AUDIO SYNTHESIZER (Web Audio API) ---
@@ -82,39 +82,42 @@
     }
 
     playSelect() {
-      this.playTone(580, 'sine', 0.08, 0.12, 0.01);
+      this.playTone(520, 'sine', 0.08, 0.12, 0.01);
     }
 
-    playPour(pitchOffset = 0) {
+    playPour(layerIndex = 0) {
       if (!this.enabled || !this.ctx) return;
-      // Fluid bubbling tone
-      const baseFreq = 340 + pitchOffset * 40;
-      this.playTone(baseFreq, 'sine', 0.22, 0.18, 0.01);
-      setTimeout(() => this.playTone(baseFreq + 60, 'triangle', 0.15, 0.12, 0.01), 70);
+      const baseFreq = 320 + layerIndex * 45;
+      this.playTone(baseFreq, 'sine', 0.25, 0.2, 0.01);
+      setTimeout(() => this.playTone(baseFreq + 55, 'triangle', 0.18, 0.15, 0.01), 60);
+    }
+
+    playInvalid() {
+      this.playTone(200, 'sawtooth', 0.14, 0.12, 0.01);
     }
 
     playCork() {
-      this.playTone(850, 'triangle', 0.1, 0.2, 0.01);
-      setTimeout(() => this.playTone(1150, 'sine', 0.12, 0.18, 0.01), 50);
+      this.playTone(850, 'triangle', 0.09, 0.2, 0.01);
+      setTimeout(() => this.playTone(1200, 'sine', 0.14, 0.18, 0.01), 50);
     }
 
     playUndo() {
-      this.playTone(400, 'sine', 0.12, 0.12, 0.01);
-      setTimeout(() => this.playTone(300, 'sine', 0.15, 0.1, 0.01), 50);
+      this.playTone(380, 'sine', 0.1, 0.12, 0.01);
+      setTimeout(() => this.playTone(280, 'sine', 0.14, 0.08, 0.01), 40);
     }
 
     playWin() {
       if (!this.enabled || !this.ctx) return;
       const notes = [440, 554, 659, 880, 1108];
       notes.forEach((freq, idx) => {
-        setTimeout(() => this.playTone(freq, 'triangle', 0.25, 0.2, 0.01), idx * 80);
+        setTimeout(() => this.playTone(freq, 'triangle', 0.28, 0.22, 0.01), idx * 75);
       });
     }
   }
 
   const sound = new SoundEngine();
 
-  // --- PARTICLE / CONFETTI SIMULATOR ---
+  // --- PARTICLE / CONFETTI ENGINE ---
   class ParticleEngine {
     constructor(canvasId) {
       this.canvas = document.getElementById(canvasId);
@@ -131,20 +134,20 @@
       this.canvas.height = window.innerHeight;
     }
 
-    burst(x, y, count = 35, colors = ['#38bdf8', '#facc15', '#ec4899', '#10b981']) {
+    burst(x, y, count = 30, colors = ['#38bdf8', '#facc15', '#ec4899', '#10b981']) {
       if (!this.ctx) return;
       for (let i = 0; i < count; i++) {
         const angle = Math.random() * Math.PI * 2;
-        const speed = 2.5 + Math.random() * 8;
+        const speed = 2.5 + Math.random() * 7;
         this.particles.push({
           x: x || this.canvas.width / 2,
           y: y || this.canvas.height / 2,
           vx: Math.cos(angle) * speed,
-          vy: Math.sin(angle) * speed - 3,
-          radius: 3 + Math.random() * 5,
+          vy: Math.sin(angle) * speed - 2.5,
+          radius: 3 + Math.random() * 4,
           color: colors[Math.floor(Math.random() * colors.length)],
           alpha: 1,
-          decay: 0.015 + Math.random() * 0.02,
+          decay: 0.016 + Math.random() * 0.02,
           gravity: 0.18
         });
       }
@@ -189,8 +192,7 @@
 
   const particles = new ParticleEngine('fx-canvas');
 
-  // --- DETERMINISTIC LEVEL GENERATOR & SOLVABILITY GUARANTEE ---
-  // Simple Mulberry32 seeded PRNG
+  // --- SEEDED PRNG FOR LEVEL GENERATION ---
   function mulberry32(seed) {
     return function () {
       let t = (seed += 0x6D2B79F5);
@@ -200,11 +202,12 @@
     };
   }
 
-  // Generates 100 guaranteed-solvable levels by scrambling from solved states
+  // --- GUARANTEED SOLVABLE LEVEL GENERATOR ---
   function generateLevel(lvlNum) {
-    const rng = mulberry32(lvlNum * 8191 + 104729);
+    const rng = mulberry32(lvlNum * 7919 + 54321);
+    const capacity = 4;
 
-    let numColors, numEmpty, capacity = 4;
+    let numColors, numEmpty;
 
     if (lvlNum === 1) {
       numColors = 2; numEmpty = 1; // 3 bottles total
@@ -213,40 +216,39 @@
     } else if (lvlNum === 3) {
       numColors = 3; numEmpty = 2; // 5 bottles
     } else if (lvlNum === 4) {
-      numColors = 4; numEmpty = 2; // 6 bottles
+      numColors = 4; numEmpty = 1; // 5 bottles
     } else if (lvlNum === 5) {
       numColors = 4; numEmpty = 2; // 6 bottles
     } else if (lvlNum <= 10) {
       numColors = 4; numEmpty = 2;
     } else if (lvlNum <= 20) {
-      numColors = 5; numEmpty = 2;
-    } else if (lvlNum <= 40) {
-      numColors = 6; numEmpty = 2;
-    } else if (lvlNum <= 70) {
-      numColors = 7; numEmpty = 2;
+      numColors = 5; numEmpty = 2; // 7 bottles
+    } else if (lvlNum <= 50) {
+      numColors = 6; numEmpty = 2; // 8 bottles
+    } else if (lvlNum <= 80) {
+      numColors = 7; numEmpty = 2; // 9 bottles
     } else {
       numColors = 8; numEmpty = 2; // 10 bottles
     }
 
     const totalBottles = numColors + numEmpty;
-    const selectedColorKeys = COLOR_KEYS.slice(0, numColors);
+    const selectedColors = COLOR_KEYS.slice(0, numColors);
 
-    // Initial solved state: each color bottle has 4 of that color
+    // Initial solved state: each color bottle is fully filled with 4 of that color
     const bottles = [];
     for (let c = 0; c < numColors; c++) {
-      bottles.push([selectedColorKeys[c], selectedColorKeys[c], selectedColorKeys[c], selectedColorKeys[c]]);
+      bottles.push([selectedColors[c], selectedColors[c], selectedColors[c], selectedColors[c]]);
     }
     for (let e = 0; e < numEmpty; e++) {
       bottles.push([]);
     }
 
-    // Scramble by reverse legal pours
-    const scrambleMoves = Math.min(60, 5 + Math.floor(lvlNum * 0.55));
-    let lastSource = -1;
-    let lastDest = -1;
+    // Scramble backwards through valid inverse moves
+    const scrambleSteps = Math.min(65, 4 + Math.floor(lvlNum * 0.6));
+    let lastFrom = -1;
+    let lastTo = -1;
 
-    for (let s = 0; s < scrambleMoves; s++) {
-      // Find non-empty bottles
+    for (let step = 0; step < scrambleSteps; step++) {
       const nonEmpties = [];
       for (let b = 0; b < totalBottles; b++) {
         if (bottles[b].length > 0) nonEmpties.push(b);
@@ -255,10 +257,9 @@
 
       const fromIdx = nonEmpties[Math.floor(rng() * nonEmpties.length)];
 
-      // Find valid destinations (has space and not same as last move reverse)
       const validDests = [];
       for (let d = 0; d < totalBottles; d++) {
-        if (d !== fromIdx && bottles[d].length < capacity && !(fromIdx === lastDest && d === lastSource)) {
+        if (d !== fromIdx && bottles[d].length < capacity && !(fromIdx === lastTo && d === lastFrom)) {
           validDests.push(d);
         }
       }
@@ -267,41 +268,26 @@
         const toIdx = validDests[Math.floor(rng() * validDests.length)];
         const movedColor = bottles[fromIdx].pop();
         bottles[toIdx].push(movedColor);
-        lastSource = fromIdx;
-        lastDest = toIdx;
+        lastFrom = fromIdx;
+        lastTo = toIdx;
       }
     }
 
-    // Ensure puzzle is not already solved
-    let alreadySolved = true;
-    for (let b = 0; b < bottles.length; b++) {
-      const bLen = bottles[b].length;
-      if (bLen > 0 && bLen < capacity) {
-        alreadySolved = false;
-        break;
-      }
-      if (bLen === capacity) {
-        const first = bottles[b][0];
-        if (!bottles[b].every(item => item === first)) {
-          alreadySolved = false;
-          break;
-        }
-      }
+    // Guarantee Level 1 is distinct and crisp
+    if (lvlNum === 1) {
+      bottles[0] = ['c1', 'c2', 'c1', 'c2'];
+      bottles[1] = ['c2', 'c1', 'c2', 'c1'];
+      bottles[2] = [];
     }
 
-    // If scramble resulted in almost-solved, make one guaranteed mix
-    if (alreadySolved && bottles[0].length > 0 && bottles[bottles.length - 1].length < capacity) {
-      bottles[bottles.length - 1].push(bottles[0].pop());
-    }
-
-    const worldIndex = Math.floor((lvlNum - 1) / 5);
-    const world = WORLDS[Math.min(worldIndex, WORLDS.length - 1)];
+    const worldIdx = Math.floor((lvlNum - 1) / 5);
+    const world = WORLDS[Math.min(worldIdx, WORLDS.length - 1)];
 
     return {
       level: lvlNum,
       world: world,
       capacity: capacity,
-      bottles: bottles.map(b => [...b]) // clone
+      bottles: bottles.map(b => [...b])
     };
   }
 
@@ -312,7 +298,7 @@
     completedLevels: {},
     levelStars: {},
     levelMoves: {},
-    bottles: [], // Current liquid state per bottle
+    bottles: [],
     initialBottles: [],
     selectedBottleIdx: null,
     moveCount: 0,
@@ -325,30 +311,38 @@
   // --- DOM CACHE ---
   const DOM = {
     gameApp: document.getElementById('game-app'),
-    hudLevelBadge: document.getElementById('hud-level-badge'),
-    hudWorldName: document.getElementById('hud-world-name'),
-    hudMoves: document.getElementById('hud-moves'),
-    bottlesStage: document.getElementById('bottles-stage'),
-    pipeSvg: document.getElementById('pipe-stream-svg'),
-    instructionBox: document.getElementById('instruction-box'),
-    btnSound: document.getElementById('btn-sound'),
-    btnHome: document.getElementById('btn-home'),
+    hudLevelText: document.getElementById('hud-level-text'),
+    hudWorldText: document.getElementById('hud-world-text'),
+    hudMovesCount: document.getElementById('hud-moves-count'),
+    toastMessage: document.getElementById('toast-message'),
+    boardArea: document.getElementById('board-area'),
+    bottlesContainer: document.getElementById('bottles-container'),
+    streamSvg: document.getElementById('pour-stream-svg'),
+    btnSoundToggle: document.getElementById('btn-sound-toggle'),
+    soundIcon: document.getElementById('sound-icon'),
     btnUndo: document.getElementById('btn-undo'),
     btnRestart: document.getElementById('btn-restart'),
-    btnInfo: document.getElementById('btn-info'),
+    btnRules: document.getElementById('btn-rules'),
+    btnLevelsModal: document.getElementById('btn-levels-modal'),
     modalVictory: document.getElementById('modal-victory'),
     modalLevels: document.getElementById('modal-levels'),
     modalRules: document.getElementById('modal-rules'),
     modalGrandMaster: document.getElementById('modal-grand-master'),
-    victoryLvlNum: document.getElementById('victory-lvl-num'),
-    victoryMoveCount: document.getElementById('victory-move-count'),
-    victoryThemeName: document.getElementById('victory-theme-name'),
+    victoryLevelNum: document.getElementById('victory-level-num'),
+    victoryMovesNum: document.getElementById('victory-moves-num'),
+    victoryWorldName: document.getElementById('victory-world-name'),
     victoryStars: document.getElementById('victory-stars'),
     worldTabsBar: document.getElementById('world-tabs-bar'),
-    levelsGridContainer: document.getElementById('levels-grid-container')
+    levelsScrollArea: document.getElementById('levels-scroll-area')
   };
 
-  // --- SAVE & LOAD (localStorage) ---
+  // --- TOAST NOTIFICATIONS ---
+  function showToast(msg, isError = false) {
+    DOM.toastMessage.textContent = msg;
+    DOM.toastMessage.classList.toggle('error', isError);
+  }
+
+  // --- SAVE / LOAD SYSTEM ---
   function saveProgress() {
     try {
       const data = {
@@ -377,7 +371,7 @@
     } catch (e) {}
   }
 
-  // --- LEVEL LOADING ---
+  // --- LEVEL LOADER ---
   function loadLevel(lvlNum) {
     hideModals();
     state.currentLevel = Math.max(1, Math.min(100, lvlNum));
@@ -391,19 +385,16 @@
     state.undoStack = [];
     state.isPouring = false;
 
-    // Apply World Theme Styling
+    // Apply World Theme
     applyTheme(lvlConfig.world);
 
-    // Update Top HUD
-    DOM.hudLevelBadge.textContent = `Level ${state.currentLevel} / 100`;
-    DOM.hudWorldName.textContent = `${lvlConfig.world.icon} ${lvlConfig.world.name}`;
-    DOM.hudMoves.textContent = '0';
-    DOM.instructionBox.textContent = 'Tap a bottle to pick up liquid.';
+    // Update HUD
+    DOM.hudLevelText.textContent = `LEVEL ${state.currentLevel} / 100`;
+    DOM.hudWorldText.textContent = `${lvlConfig.world.icon} ${lvlConfig.world.name}`;
+    DOM.hudMovesCount.textContent = '0';
+    showToast('Tap a bottle to select it');
 
-    // Clear Pipe Overlay
-    DOM.pipeSvg.innerHTML = '';
-
-    // Render Bottles
+    DOM.streamSvg.innerHTML = '';
     renderBottles();
   }
 
@@ -411,71 +402,79 @@
     const root = document.documentElement;
     root.style.setProperty('--bg-gradient', world.bg);
     root.style.setProperty('--accent-color', world.accent);
-    root.style.setProperty('--accent-glow', `${world.accent}77`);
+    root.style.setProperty('--accent-glow', `${world.accent}66`);
   }
 
-  // --- RENDER BOTTLE DOM ELEMENTS ---
+  // --- RENDER BOTTLE COMPONENTS ---
   function renderBottles() {
-    DOM.bottlesStage.innerHTML = '';
-
-    const total = state.bottles.length;
-    // Scale bottle width slightly if 8+ bottles on narrow screens
-    const scaleClass = total >= 8 ? 'compact-layout' : '';
+    DOM.bottlesContainer.innerHTML = '';
 
     state.bottles.forEach((layers, idx) => {
       const isCompleted = isBottleCompleted(layers);
 
-      const wrapper = document.createElement('div');
-      wrapper.className = `bottle-wrapper ${scaleClass} ${state.selectedBottleIdx === idx ? 'selected' : ''} ${isCompleted ? 'completed' : ''}`;
-      wrapper.dataset.index = idx;
+      const node = document.createElement('div');
+      node.className = `bottle-node ${state.selectedBottleIdx === idx ? 'selected' : ''} ${isCompleted ? 'completed' : ''}`;
+      node.dataset.index = idx;
 
-      // Bottle Cap / Top stopper
+      // Stopper / Cap
       const cap = document.createElement('div');
       cap.className = 'bottle-cap';
-      wrapper.appendChild(cap);
+      node.appendChild(cap);
 
-      // Glass Body
+      // Glass Tube
       const glass = document.createElement('div');
       glass.className = 'bottle-glass';
 
-      // Liquid Layers (bottom to top)
+      // Liquid Layers (Bottom to Top)
       layers.forEach((colorKey, lIdx) => {
         const colorData = FLUID_COLORS[colorKey];
-        const seg = document.createElement('div');
-        seg.className = `liquid-segment ${lIdx === layers.length - 1 ? 'top-meniscus' : ''}`;
-        seg.style.backgroundColor = colorData ? colorData.hex : '#38bdf8';
+        const layer = document.createElement('div');
+        layer.className = `liquid-layer ${lIdx === layers.length - 1 ? 'top-layer' : ''}`;
+        layer.style.backgroundColor = colorData ? colorData.hex : '#38bdf8';
 
-        // Add bubble accent
+        // Floating bubbles
         if (Math.random() < 0.6) {
-          const bubble = document.createElement('div');
-          bubble.className = 'bubble';
-          bubble.style.left = `${15 + Math.random() * 60}%`;
-          bubble.style.width = `${3 + Math.random() * 4}px`;
-          bubble.style.height = bubble.style.width;
-          bubble.style.animationDelay = `${Math.random() * 1.5}s`;
-          seg.appendChild(bubble);
+          const b = document.createElement('div');
+          b.className = 'bubble-dot';
+          b.style.left = `${18 + Math.random() * 55}%`;
+          b.style.width = `${3 + Math.random() * 4}px`;
+          b.style.height = b.style.width;
+          b.style.animationDelay = `${Math.random() * 1.5}s`;
+          layer.appendChild(b);
         }
 
-        glass.appendChild(seg);
+        glass.appendChild(layer);
       });
 
-      // Completed Star Badge
+      // Completed bottle star
       if (isCompleted) {
         const star = document.createElement('div');
-        star.className = 'completed-badge';
+        star.className = 'complete-star';
         star.textContent = '⭐';
-        wrapper.appendChild(star);
+        node.appendChild(star);
       }
 
-      wrapper.appendChild(glass);
+      node.appendChild(glass);
 
-      // Click Handler
-      wrapper.addEventListener('click', () => onBottleClick(idx));
+      // Label under bottle
+      const label = document.createElement('span');
+      label.className = 'bottle-label';
+      label.textContent = `Bottle ${idx + 1}`;
+      node.appendChild(label);
 
-      DOM.bottlesStage.appendChild(wrapper);
+      // Fast, Touch & Click Handler with event prevention
+      const handleTap = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        onBottleTapped(idx);
+      };
+
+      node.addEventListener('pointerdown', handleTap, { passive: false });
+
+      DOM.bottlesContainer.appendChild(node);
     });
 
-    // Mark valid target bottles if one is selected
+    // Highlight valid targets if a bottle is selected
     if (state.selectedBottleIdx !== null) {
       markValidTargets(state.selectedBottleIdx);
     }
@@ -487,86 +486,97 @@
     return layers.every(c => c === first);
   }
 
-  // --- SELECTION & INTERACTION LOGIC ---
-  function onBottleClick(idx) {
+  // --- TOUCH / CLICK INTERACTION ---
+  function onBottleTapped(idx) {
     if (state.isPouring) return;
     sound.init();
 
-    // 1. If no bottle selected yet
+    // 1. No bottle selected yet -> Select source bottle
     if (state.selectedBottleIdx === null) {
       if (state.bottles[idx].length === 0) {
-        DOM.instructionBox.textContent = 'Cannot pick up an empty bottle!';
+        sound.playInvalid();
+        showToast(`Bottle ${idx + 1} is empty! Pick one with liquid.`, true);
+        shakeBottle(idx);
         return;
       }
-      // If bottle is already full and completed, optional pick up allowed or friendly info
-      if (isBottleCompleted(state.bottles[idx])) {
-        DOM.instructionBox.textContent = 'This bottle is already sorted!';
-      }
+
       state.selectedBottleIdx = idx;
       sound.playSelect();
-      DOM.instructionBox.textContent = 'Now tap destination bottle to pour.';
+      showToast(`Selected Bottle ${idx + 1}. Tap destination to pour.`);
       renderBottles();
       return;
     }
 
-    // 2. Tapping the same bottle deselects it
+    // 2. Tapped the same bottle -> Deselect
     if (state.selectedBottleIdx === idx) {
       state.selectedBottleIdx = null;
       sound.playSelect();
-      DOM.instructionBox.textContent = 'Tap a bottle to pick up liquid.';
+      showToast('Deselected. Tap a bottle to pick up liquid.');
       renderBottles();
       return;
     }
 
-    // 3. Tapping another bottle: check if valid pour
+    // 3. Tapped a destination bottle
     const fromIdx = state.selectedBottleIdx;
     const toIdx = idx;
 
-    if (canPour(fromIdx, toIdx)) {
-      executePour(fromIdx, toIdx);
-    } else {
-      // Invalid destination
-      if (state.bottles[toIdx].length > 0) {
-        // Switch selection to this new bottle
-        state.selectedBottleIdx = toIdx;
-        sound.playSelect();
-        DOM.instructionBox.textContent = 'Selected new bottle. Choose destination.';
-        renderBottles();
-      } else {
-        DOM.instructionBox.textContent = 'Cannot pour here! Pick matching color or space.';
-      }
-    }
-  }
-
-  // --- CAN POUR VALIDATOR ---
-  function canPour(fromIdx, toIdx) {
     const fromBottle = state.bottles[fromIdx];
     const toBottle = state.bottles[toIdx];
 
-    if (!fromBottle || fromBottle.length === 0) return false;
-    if (!toBottle || toBottle.length >= state.capacity) return false;
+    // Check if target is full
+    if (toBottle.length >= state.capacity) {
+      sound.playInvalid();
+      showToast(`Cannot pour: Bottle ${toIdx + 1} is full!`, true);
+      shakeBottle(toIdx);
+      return;
+    }
 
-    const topColorFrom = fromBottle[fromBottle.length - 1];
+    // Check if colors match
+    const fromTopColor = fromBottle[fromBottle.length - 1];
+    if (toBottle.length > 0) {
+      const toTopColor = toBottle[toBottle.length - 1];
+      if (fromTopColor !== toTopColor) {
+        sound.playInvalid();
+        showToast("Cannot pour: Colors don't match!", true);
+        shakeBottle(toIdx);
+        return;
+      }
+    }
 
-    // Empty destination can receive any top color
-    if (toBottle.length === 0) return true;
-
-    // Non-empty destination must match top color
-    const topColorTo = toBottle[toBottle.length - 1];
-    return topColorFrom === topColorTo;
+    // Valid pour!
+    executePour(fromIdx, toIdx);
   }
 
-  // Highlight valid destination bottles
+  function shakeBottle(idx) {
+    const nodes = DOM.bottlesContainer.querySelectorAll('.bottle-node');
+    const targetNode = nodes[idx];
+    if (targetNode) {
+      targetNode.classList.remove('shake-invalid');
+      void targetNode.offsetWidth; // Force reflow
+      targetNode.classList.add('shake-invalid');
+      setTimeout(() => targetNode.classList.remove('shake-invalid'), 400);
+    }
+  }
+
   function markValidTargets(fromIdx) {
-    const bottleEls = DOM.bottlesStage.querySelectorAll('.bottle-wrapper');
-    bottleEls.forEach((el, idx) => {
-      if (idx !== fromIdx && canPour(fromIdx, idx)) {
-        el.classList.add('valid-target');
+    const fromBottle = state.bottles[fromIdx];
+    if (!fromBottle || fromBottle.length === 0) return;
+    const fromTopColor = fromBottle[fromBottle.length - 1];
+
+    const nodes = DOM.bottlesContainer.querySelectorAll('.bottle-node');
+    nodes.forEach((n, idx) => {
+      if (idx !== fromIdx) {
+        const b = state.bottles[idx];
+        if (b.length < state.capacity) {
+          if (b.length === 0 || b[b.length - 1] === fromTopColor) {
+            n.classList.add('valid-target');
+          }
+        }
       }
     });
   }
 
-  // --- EXECUTE WATER POUR (ANIMATED STREAM & PIPE) ---
+  // --- VISIBLE LIQUID POUR ANIMATION ---
   function executePour(fromIdx, toIdx) {
     state.isPouring = true;
     state.selectedBottleIdx = null;
@@ -575,17 +585,17 @@
     const toBottle = state.bottles[toIdx];
     const topColor = fromBottle[fromBottle.length - 1];
 
-    // Count how many matching contiguous layers on top of fromBottle
-    let countMatching = 0;
+    // Count consecutive matching layers in source
+    let matchingCount = 0;
     for (let i = fromBottle.length - 1; i >= 0; i--) {
-      if (fromBottle[i] === topColor) countMatching++;
+      if (fromBottle[i] === topColor) matchingCount++;
       else break;
     }
 
     const availableSpace = state.capacity - toBottle.length;
-    const transferCount = Math.min(countMatching, availableSpace);
+    const transferCount = Math.min(matchingCount, availableSpace);
 
-    // Save move to undo stack
+    // Save to Undo stack
     state.undoStack.push({
       from: fromIdx,
       to: toIdx,
@@ -594,92 +604,90 @@
     });
 
     state.moveCount++;
-    DOM.hudMoves.textContent = state.moveCount;
+    DOM.hudMovesCount.textContent = state.moveCount;
+    showToast(`Pouring from Bottle ${fromIdx + 1} to Bottle ${toIdx + 1}...`);
 
-    // Animate tilting & pouring stream
-    const bottleEls = DOM.bottlesStage.querySelectorAll('.bottle-wrapper');
-    const fromEl = bottleEls[fromIdx];
-    const toEl = bottleEls[toIdx];
+    const nodes = DOM.bottlesContainer.querySelectorAll('.bottle-node');
+    const fromNode = nodes[fromIdx];
+    const toNode = nodes[toIdx];
 
-    const fromRect = fromEl.getBoundingClientRect();
-    const toRect = toEl.getBoundingClientRect();
-    const boardRect = DOM.boardViewport.getBoundingClientRect();
+    const fromRect = fromNode.getBoundingClientRect();
+    const toRect = toNode.getBoundingClientRect();
+    const boardRect = DOM.boardArea.getBoundingClientRect();
 
-    const isPouringRight = toRect.left > fromRect.left;
-    fromEl.classList.add(isPouringRight ? 'tilting-right' : 'tilting-left');
+    const pouringRight = toRect.left > fromRect.left;
+    fromNode.classList.add(pouringRight ? 'tilting-right' : 'tilting-left');
 
     sound.playPour(toBottle.length);
 
-    // Draw dynamic curved flow stream SVG
-    const startX = (isPouringRight ? fromRect.right - 10 : fromRect.left + 10) - boardRect.left;
+    // Dynamic curved stream pipe
+    const startX = (pouringRight ? fromRect.right - 12 : fromRect.left + 12) - boardRect.left;
     const startY = fromRect.top + 20 - boardRect.top;
     const endX = (toRect.left + toRect.width / 2) - boardRect.left;
-    const endY = (toRect.top + 30) - boardRect.top;
+    const endY = (toRect.top + 35) - boardRect.top;
 
     const colorHex = FLUID_COLORS[topColor] ? FLUID_COLORS[topColor].hex : '#38bdf8';
 
-    DOM.pipeSvg.innerHTML = `
-      <path class="flow-stream-path" 
-            d="M ${startX} ${startY} Q ${(startX + endX) / 2} ${Math.min(startY, endY) - 30}, ${endX} ${endY}"
+    DOM.streamSvg.innerHTML = `
+      <path class="stream-path" 
+            d="M ${startX} ${startY} Q ${(startX + endX) / 2} ${Math.min(startY, endY) - 35}, ${endX} ${endY}"
             stroke="${colorHex}" 
-            stroke-width="7" 
-            stroke-dasharray="10 4" />
+            stroke-width="8" 
+            stroke-dasharray="12 4" />
     `;
 
-    // Splash particles at target bottle mouth
-    particles.burst(toRect.left + toRect.width / 2, toRect.top + 30, 15, [colorHex, '#ffffff']);
+    // Splash particles at target bottle entrance
+    particles.burst(toRect.left + toRect.width / 2, toRect.top + 35, 16, [colorHex, '#ffffff']);
 
-    // Perform the actual data transfer
+    // Complete the physical transfer after stream animation
     setTimeout(() => {
       for (let i = 0; i < transferCount; i++) {
         fromBottle.pop();
         toBottle.push(topColor);
       }
 
-      // Check if target bottle was just completed
+      // If destination bottle is completed with 4 identical layers
       if (isBottleCompleted(toBottle)) {
         sound.playCork();
-        particles.burst(toRect.left + toRect.width / 2, toRect.top + toRect.height / 2, 25, [colorHex, '#facc15']);
+        particles.burst(toRect.left + toRect.width / 2, toRect.top + toRect.height / 2, 28, [colorHex, '#facc15']);
       }
 
-      // Remove tilt and pipe stream
-      fromEl.classList.remove('tilting-right', 'tilting-left');
-      DOM.pipeSvg.innerHTML = '';
+      fromNode.classList.remove('tilting-right', 'tilting-left');
+      DOM.streamSvg.innerHTML = '';
       state.isPouring = false;
 
       renderBottles();
+      showToast('Tap a bottle to select it');
 
-      // Check if entire level is completed
       checkLevelVictory();
     }, 450);
   }
 
   // --- CHECK WIN CONDITION ---
   function checkLevelVictory() {
-    let allSorted = true;
+    let won = true;
 
     for (let i = 0; i < state.bottles.length; i++) {
       const b = state.bottles[i];
       if (b.length === 0) continue; // empty bottle is fine
 
       if (b.length !== state.capacity) {
-        allSorted = false;
+        won = false;
         break;
       }
 
-      const first = b[0];
-      if (!b.every(c => c === first)) {
-        allSorted = false;
+      const firstColor = b[0];
+      if (!b.every(c => c === firstColor)) {
+        won = false;
         break;
       }
     }
 
-    if (allSorted) {
+    if (won) {
       sound.playWin();
 
-      // Calculate Stars (1 to 3 stars)
       let stars = 3;
-      if (state.moveCount > 25) stars = 1;
+      if (state.moveCount > 24) stars = 1;
       else if (state.moveCount > 16) stars = 2;
 
       state.completedLevels[state.currentLevel] = true;
@@ -692,17 +700,16 @@
 
       saveProgress();
 
-      // Grand Finale at level 100
       if (state.currentLevel === 100) {
-        showGrandMasterModal();
+        particles.burst(window.innerWidth / 2, window.innerHeight * 0.35, 100);
+        DOM.modalGrandMaster.classList.add('active');
         return;
       }
 
-      // Show Victory Modal
-      DOM.victoryLvlNum.textContent = state.currentLevel;
-      DOM.victoryMoveCount.textContent = state.moveCount;
+      DOM.victoryLevelNum.textContent = state.currentLevel;
+      DOM.victoryMovesNum.textContent = state.moveCount;
       const worldIdx = Math.floor((state.currentLevel - 1) / 5);
-      DOM.victoryThemeName.textContent = WORLDS[Math.min(worldIdx, WORLDS.length - 1)].name;
+      DOM.victoryWorldName.textContent = WORLDS[Math.min(worldIdx, WORLDS.length - 1)].name;
       DOM.victoryStars.innerHTML = '⭐'.repeat(stars) + '☆'.repeat(3 - stars);
 
       particles.burst(window.innerWidth / 2, window.innerHeight * 0.4, 60);
@@ -710,33 +717,25 @@
     }
   }
 
-  function showGrandMasterModal() {
-    particles.burst(window.innerWidth / 2, window.innerHeight * 0.35, 100);
-    setTimeout(() => particles.burst(window.innerWidth * 0.3, window.innerHeight * 0.4, 70), 300);
-    setTimeout(() => particles.burst(window.innerWidth * 0.7, window.innerHeight * 0.4, 70), 600);
-    DOM.modalGrandMaster.classList.add('active');
-  }
-
   // --- UNDO MOVE ---
   function undoMove() {
     if (state.isPouring || state.undoStack.length === 0) return;
     sound.playUndo();
 
-    const lastMove = state.undoStack.pop();
-    const fromBottle = state.bottles[lastMove.from];
-    const toBottle = state.bottles[lastMove.to];
+    const last = state.undoStack.pop();
+    const fromBottle = state.bottles[last.from];
+    const toBottle = state.bottles[last.to];
 
-    // Transfer back
-    for (let i = 0; i < lastMove.count; i++) {
+    for (let i = 0; i < last.count; i++) {
       toBottle.pop();
-      fromBottle.push(lastMove.color);
+      fromBottle.push(last.color);
     }
 
     state.moveCount = Math.max(0, state.moveCount - 1);
-    DOM.hudMoves.textContent = state.moveCount;
+    DOM.hudMovesCount.textContent = state.moveCount;
     state.selectedBottleIdx = null;
 
-    DOM.instructionBox.textContent = 'Move undone.';
+    showToast('Move undone.');
     renderBottles();
   }
 
@@ -748,9 +747,9 @@
     state.moveCount = 0;
     state.undoStack = [];
     state.isPouring = false;
-    DOM.hudMoves.textContent = '0';
-    DOM.instructionBox.textContent = 'Level restarted. Tap to begin.';
-    DOM.pipeSvg.innerHTML = '';
+    DOM.hudMovesCount.textContent = '0';
+    DOM.streamSvg.innerHTML = '';
+    showToast('Level restarted. Tap to begin.');
     sound.playSelect();
     renderBottles();
   }
@@ -764,44 +763,43 @@
     }
   }
 
-  // --- LEVEL SELECT MODAL (1 TO 100) ---
+  // --- 100 LEVEL SELECT MODAL ---
   function showLevelsModal() {
     hideModals();
     DOM.worldTabsBar.innerHTML = '';
-    DOM.levelsGridContainer.innerHTML = '';
+    DOM.levelsScrollArea.innerHTML = '';
 
-    // Create World Tab Buttons
     WORLDS.forEach((world, wIdx) => {
       const tab = document.createElement('button');
-      tab.className = `world-tab-btn ${wIdx === 0 ? 'active' : ''}`;
+      tab.className = `tab-btn ${wIdx === 0 ? 'active' : ''}`;
       tab.textContent = `${world.icon} ${world.name}`;
-      tab.addEventListener('click', () => {
-        document.querySelectorAll('.world-tab-btn').forEach(b => b.classList.remove('active'));
+      tab.addEventListener('click', (e) => {
+        e.preventDefault();
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
         tab.classList.add('active');
-        const sec = document.getElementById(`w-group-${wIdx}`);
+        const sec = document.getElementById(`wb-${wIdx}`);
         if (sec) sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
       });
       DOM.worldTabsBar.appendChild(tab);
     });
 
-    // Create 20 World Groups with 5 levels each
     WORLDS.forEach((world, wIdx) => {
       const start = wIdx * 5 + 1;
       const end = (wIdx + 1) * 5;
 
-      const group = document.createElement('div');
-      group.className = 'world-level-group';
-      group.id = `w-group-${wIdx}`;
+      const block = document.createElement('div');
+      block.className = 'world-block';
+      block.id = `wb-${wIdx}`;
 
-      group.innerHTML = `
-        <div class="world-group-heading">
+      block.innerHTML = `
+        <div class="world-block-head">
           <span>${world.icon} ${world.name}</span>
-          <span style="opacity: 0.7;">${start}–${end}</span>
+          <span style="opacity: 0.75;">${start}–${end}</span>
         </div>
       `;
 
       const grid = document.createElement('div');
-      grid.className = 'lvl-grid-5';
+      grid.className = 'levels-grid';
 
       for (let l = start; l <= end; l++) {
         const isUnlocked = l <= state.unlockedLevel;
@@ -809,36 +807,37 @@
         const isCurrent = l === state.currentLevel;
         const stars = state.levelStars[l] || 0;
 
-        const tile = document.createElement('button');
-        tile.className = `lvl-tile ${isCompleted ? 'completed' : ''} ${isCurrent ? 'current' : ''} ${!isUnlocked ? 'locked' : ''}`;
-        tile.disabled = !isUnlocked;
+        const cell = document.createElement('button');
+        cell.className = `level-cell ${isCompleted ? 'completed' : ''} ${isCurrent ? 'current' : ''} ${!isUnlocked ? 'locked' : ''}`;
+        cell.disabled = !isUnlocked;
 
         let starsText = '';
         if (isCompleted) {
-          starsText = `<div class="lvl-substars">${'⭐'.repeat(stars)}</div>`;
+          starsText = `<div class="lvl-stars-mini">${'⭐'.repeat(stars)}</div>`;
         } else if (isUnlocked) {
-          starsText = `<div class="lvl-substars" style="color: #38bdf8;">Play</div>`;
+          starsText = `<div class="lvl-stars-mini" style="color:#38bdf8;">Play</div>`;
         } else {
-          starsText = `<div class="lvl-substars">🔒</div>`;
+          starsText = `<div class="lvl-stars-mini">🔒</div>`;
         }
 
-        tile.innerHTML = `
+        cell.innerHTML = `
           <span>${l}</span>
           ${starsText}
         `;
 
         if (isUnlocked) {
-          tile.addEventListener('click', () => {
+          cell.addEventListener('click', (e) => {
+            e.preventDefault();
             sound.playSelect();
             loadLevel(l);
           });
         }
 
-        grid.appendChild(tile);
+        grid.appendChild(cell);
       }
 
-      group.appendChild(grid);
-      DOM.levelsGridContainer.appendChild(group);
+      block.appendChild(grid);
+      DOM.levelsScrollArea.appendChild(block);
     });
 
     DOM.modalLevels.classList.add('active');
@@ -853,18 +852,20 @@
   function toggleSound() {
     state.soundOn = !state.soundOn;
     sound.enabled = state.soundOn;
-    DOM.btnSound.textContent = state.soundOn ? '🔊' : '🔇';
+    DOM.soundIcon.textContent = state.soundOn ? '🔊' : '🔇';
     saveProgress();
   }
 
-  // --- INITIALIZATION & BINDINGS ---
+  // --- INITIALIZATION ---
   function initGame() {
     loadProgress();
-    DOM.btnSound.textContent = state.soundOn ? '🔊' : '🔇';
+    DOM.soundIcon.textContent = state.soundOn ? '🔊' : '🔇';
 
-    // Button Actions
+    // Action button listeners
     document.querySelectorAll('[data-action]').forEach(btn => {
-      btn.addEventListener('click', () => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
         const action = btn.dataset.action;
         sound.init();
 
@@ -878,10 +879,10 @@
           case 'next-level':
             nextLevel();
             break;
-          case 'levels':
+          case 'open-levels':
             showLevelsModal();
             break;
-          case 'how-to-play':
+          case 'open-rules':
             hideModals();
             DOM.modalRules.classList.add('active');
             break;
@@ -895,7 +896,7 @@
       });
     });
 
-    // Keyboard Shortcuts (PC)
+    // Keyboard shortcuts for PC
     window.addEventListener('keydown', (e) => {
       if (e.code === 'KeyZ' || (e.ctrlKey && e.code === 'KeyZ')) {
         undoMove();
@@ -906,7 +907,10 @@
       }
     });
 
-    // Load saved or first level
+    // Prevent pinch-to-zoom on mobile Safari/Chrome
+    document.addEventListener('gesturestart', (e) => e.preventDefault(), { passive: false });
+
+    // Load initial level
     loadLevel(state.unlockedLevel);
   }
 

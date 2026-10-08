@@ -17,7 +17,6 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.windowInsetsPadding
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -39,7 +38,7 @@ class MainActivity : ComponentActivity() {
           modifier = Modifier.fillMaxSize(),
           contentWindowInsets = WindowInsets(0, 0, 0, 0)
         ) { _ ->
-          ColorSpinMatchGameScreen()
+          ColorFlowGameScreen()
         }
       }
     }
@@ -48,7 +47,7 @@ class MainActivity : ComponentActivity() {
 
 @SuppressLint("SetJavaScriptEnabled")
 @Composable
-fun ColorSpinMatchGameScreen() {
+fun ColorFlowGameScreen() {
   val context = LocalContext.current
   val webView = remember {
     WebView(context).apply {
@@ -87,25 +86,12 @@ fun ColorSpinMatchGameScreen() {
   }
 
   BackHandler {
-    // Send ESC key event or trigger back in game
     webView.evaluateJavascript(
       """
       (function() {
-        const modal = document.querySelector('.modal-overlay.active');
+        const modal = document.querySelector('.modal-overlay.active, .modal-backdrop.active');
         if (modal) {
           modal.classList.remove('active');
-          return true;
-        }
-        const game = document.getElementById('screen-game');
-        if (game && game.classList.contains('active')) {
-          const btnBack = document.getElementById('btn-game-back');
-          if (btnBack) btnBack.click();
-          return true;
-        }
-        const select = document.getElementById('screen-level-select');
-        if (select && select.classList.contains('active')) {
-          const homeBtn = document.querySelector('.nav-back-btn');
-          if (homeBtn) homeBtn.click();
           return true;
         }
         return false;

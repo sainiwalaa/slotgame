@@ -3,180 +3,187 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <meta name="description" content="Color Flow – 100 Level Water Color Sort Puzzle Game">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="theme-color" content="#07192f">
   <title>Color Flow – Water Sort Puzzle</title>
   <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-  <!-- Confetti / Particle Effects Canvas -->
+  <!-- Confetti / Particles Layer -->
   <canvas id="fx-canvas"></canvas>
 
-  <!-- Main Game Container -->
   <div id="game-app" class="game-container">
 
-    <!-- Top Navigation & Controls Bar -->
+    <!-- Top Status Header -->
     <header class="game-top-bar">
       <div class="top-bar-left">
-        <button id="btn-home" class="ctrl-btn icon-only" title="Home / Levels" data-action="levels">🗺️</button>
-        <button id="btn-sound" class="ctrl-btn icon-only" title="Toggle Sound" data-action="toggle-sound">🔊</button>
+        <button id="btn-levels-modal" class="btn-ctrl" title="Select Level" data-action="open-levels">
+          <span class="ctrl-icon">🗺️</span>
+        </button>
+        <button id="btn-sound-toggle" class="btn-ctrl" title="Sound Toggle" data-action="toggle-sound">
+          <span id="sound-icon" class="ctrl-icon">🔊</span>
+        </button>
       </div>
 
       <div class="level-meta">
-        <div class="game-brand-title">COLOR FLOW</div>
-        <div class="level-badge" id="hud-level-badge">Level 1 / 100</div>
-        <div class="world-theme-name" id="hud-world-name">💧 Aqua Water</div>
+        <h1 class="brand-title">COLOR FLOW</h1>
+        <div class="level-badge" id="hud-level-text">LEVEL 1 / 100</div>
+        <div class="world-tag" id="hud-world-text">💧 Clean Aqua</div>
       </div>
 
       <div class="top-bar-right">
-        <div class="moves-counter-pill">
-          <span class="pill-label">MOVES</span>
-          <span class="pill-number" id="hud-moves">0</span>
+        <div class="moves-badge">
+          <span class="moves-label">MOVES</span>
+          <span class="moves-count" id="hud-moves-count">0</span>
         </div>
       </div>
     </header>
 
-    <!-- Quick Action Bar (Undo, Restart, Hint) -->
-    <div class="quick-action-bar">
-      <button id="btn-undo" class="action-btn" title="Undo last move" data-action="undo">
-        <span class="action-icon">↶</span>
-        <span class="action-text">Undo</span>
+    <!-- Quick Action Controls -->
+    <div class="action-bar">
+      <button id="btn-undo" class="btn-action" data-action="undo" title="Undo Move">
+        <span class="act-icon">↶</span>
+        <span class="act-text">Undo</span>
       </button>
-      <button id="btn-restart" class="action-btn" title="Restart level" data-action="restart">
-        <span class="action-icon">↻</span>
-        <span class="action-text">Restart</span>
+      <button id="btn-restart" class="btn-action" data-action="restart" title="Restart Level">
+        <span class="act-icon">↻</span>
+        <span class="act-text">Restart</span>
       </button>
-      <button id="btn-info" class="action-btn" title="How to play" data-action="how-to-play">
-        <span class="action-icon">ℹ️</span>
-        <span class="action-text">Rules</span>
+      <button id="btn-rules" class="btn-action" data-action="open-rules" title="Game Rules">
+        <span class="act-icon">📖</span>
+        <span class="act-text">Rules</span>
       </button>
     </div>
 
-    <!-- Main Puzzle Playing Board -->
-    <main class="board-viewport" id="board-viewport">
-      <!-- Water pouring connection stream / pipe overlay -->
-      <svg id="pipe-stream-svg" class="pipe-stream-overlay"></svg>
+    <!-- Active Guidance Toast -->
+    <div class="status-banner-wrap">
+      <div id="toast-message" class="toast-message">Tap a bottle to select it</div>
+    </div>
 
-      <!-- Bottle Containers Grid -->
-      <div class="bottles-stage" id="bottles-stage">
-        <!-- Bottle elements dynamically injected here -->
+    <!-- Main Game Board / Bottles Stage -->
+    <main class="board-area" id="board-area">
+      <!-- Dynamic SVG Stream connecting source bottle to destination bottle during pouring -->
+      <svg id="pour-stream-svg" class="pour-stream-svg"></svg>
+
+      <!-- Bottles Container Grid -->
+      <div class="bottles-container" id="bottles-container">
+        <!-- Rendered by script.js -->
       </div>
     </main>
 
-    <!-- Bottom Instruction & Status Banner -->
-    <footer class="bottom-guidance-bar">
-      <div class="instruction-box" id="instruction-box">
-        Tap a bottle, then choose where to pour.
-      </div>
+    <!-- Bottom Hints / Footer -->
+    <footer class="game-footer">
+      <span class="footer-tip">💧 Only same colors can pour on each other</span>
     </footer>
 
     <!-- LEVEL COMPLETE MODAL -->
-    <div id="modal-victory" class="modal-backdrop">
-      <div class="modal-dialog victory-dialog">
-        <div class="trophy-bounce">🏆</div>
-        <h2 class="dialog-title" id="victory-title">LEVEL SOLVED!</h2>
-        <div class="star-rating-row" id="victory-stars">
-          <span class="star-icon">⭐</span>
-          <span class="star-icon">⭐</span>
-          <span class="star-icon">⭐</span>
+    <div id="modal-victory" class="modal-overlay">
+      <div class="modal-card victory-card">
+        <div class="trophy-icon">🏆</div>
+        <h2 class="modal-title">LEVEL SOLVED!</h2>
+        <div class="stars-row" id="victory-stars">
+          <span>⭐</span>
+          <span>⭐</span>
+          <span>⭐</span>
         </div>
-        <div class="victory-details-card">
-          <div class="v-row">
+        <div class="stat-box">
+          <div class="stat-line">
             <span>Level:</span>
-            <strong id="victory-lvl-num">1</strong>
+            <strong id="victory-level-num">1</strong>
           </div>
-          <div class="v-row">
-            <span>Total Moves:</span>
-            <strong id="victory-move-count">12</strong>
+          <div class="stat-line">
+            <span>Moves Used:</span>
+            <strong id="victory-moves-num">12</strong>
           </div>
-          <div class="v-row">
-            <span>Theme:</span>
-            <strong id="victory-theme-name">Clean Aqua</strong>
+          <div class="stat-line">
+            <span>World:</span>
+            <strong id="victory-world-name">Clean Aqua</strong>
           </div>
         </div>
-        <div class="dialog-actions">
-          <button id="btn-next-level" class="btn-primary" data-action="next-level">NEXT LEVEL ▶️</button>
-          <div class="dialog-sub-actions">
-            <button class="btn-secondary" data-action="restart">↻ Replay</button>
-            <button class="btn-secondary" data-action="levels">🗺️ Levels</button>
+        <div class="modal-buttons">
+          <button id="btn-next-level" class="btn-main-action" data-action="next-level">
+            NEXT LEVEL ▶️
+          </button>
+          <div class="modal-sub-buttons">
+            <button class="btn-sub-action" data-action="restart">↻ Replay</button>
+            <button class="btn-sub-action" data-action="open-levels">🗺️ Levels</button>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- LEVEL SELECT (1 TO 100) MODAL -->
-    <div id="modal-levels" class="modal-backdrop">
-      <div class="modal-dialog levels-dialog">
-        <div class="modal-head">
-          <h3 class="modal-head-title">Select Level (1–100)</h3>
-          <button class="btn-close-modal" data-action="close-modal">✕</button>
+    <!-- 100 LEVEL SELECT MODAL -->
+    <div id="modal-levels" class="modal-overlay">
+      <div class="modal-card levels-card">
+        <div class="modal-header">
+          <h3 class="modal-header-title">Select Level (1–100)</h3>
+          <button class="btn-close-x" data-action="close-modal">✕</button>
         </div>
 
-        <!-- World category tabs -->
-        <div class="world-tabs-scroller" id="world-tabs-bar">
-          <!-- Dynamically populated world category buttons -->
+        <!-- 20 World Tabs Scroller -->
+        <div class="world-tabs-bar" id="world-tabs-bar">
+          <!-- Injected dynamically -->
         </div>
 
-        <!-- 100 Level badges grid -->
-        <div class="levels-scroll-container" id="levels-grid-container">
-          <!-- Levels injected by JS -->
+        <!-- 100 Levels Grid -->
+        <div class="levels-scroll-area" id="levels-scroll-area">
+          <!-- Injected dynamically -->
         </div>
       </div>
     </div>
 
     <!-- HOW TO PLAY / RULES MODAL -->
-    <div id="modal-rules" class="modal-backdrop">
-      <div class="modal-dialog rules-dialog">
-        <div class="modal-head">
-          <h3 class="modal-head-title">📖 Water Sort Rules</h3>
-          <button class="btn-close-modal" data-action="close-modal">✕</button>
+    <div id="modal-rules" class="modal-overlay">
+      <div class="modal-card rules-card">
+        <div class="modal-header">
+          <h3 class="modal-header-title">📖 How To Play</h3>
+          <button class="btn-close-x" data-action="close-modal">✕</button>
         </div>
-        <div class="rules-body">
-          <div class="rule-item">
-            <div class="rule-icon">🧪</div>
-            <div class="rule-desc">
-              <strong>Objective:</strong> Sort all colored liquids until each bottle holds exactly <strong>one single color</strong>.
+        <div class="rules-content">
+          <div class="rule-box">
+            <span class="r-icon">🧪</span>
+            <div>
+              <strong>Objective:</strong>
+              <p>Sort all the colored water so each bottle has only 1 color!</p>
             </div>
           </div>
-          <div class="rule-item">
-            <div class="rule-icon">👆</div>
-            <div class="rule-desc">
-              <strong>How to Pour:</strong> Tap a bottle to pick it up, then tap another bottle to pour water through the connection pipe.
+          <div class="rule-box">
+            <span class="r-icon">👆</span>
+            <div>
+              <strong>Tap to Select:</strong>
+              <p>Tap a bottle to pick it up. It will lift up and glow.</p>
             </div>
           </div>
-          <div class="rule-item">
-            <div class="rule-icon">💧</div>
-            <div class="rule-desc">
-              <strong>Matching Colors:</strong> You can only pour onto the <em>same color</em> (or into an empty container) if there is enough space.
+          <div class="rule-box">
+            <span class="r-icon">💧</span>
+            <div>
+              <strong>Pouring Rule:</strong>
+              <p>You can only pour if the destination bottle is empty OR has the same top color, and has space.</p>
             </div>
           </div>
-          <div class="rule-item">
-            <div class="rule-icon">↶</div>
-            <div class="rule-desc">
-              <strong>No Penalties:</strong> Use <strong>Undo</strong> anytime. Every single level is 100% free and solvable!
-            </div>
-          </div>
-          <div class="rule-item">
-            <div class="rule-icon">🌍</div>
-            <div class="rule-desc">
-              <strong>20 Evolving Worlds:</strong> Progress through Pipe Water, Screw Cap Flasks, Frozen Ice, Fire Mist, Rainforest, Candy Syrup, Space Energy Tubes, and more!
+          <div class="rule-box">
+            <span class="r-icon">↶</span>
+            <div>
+              <strong>Free Moves & Undo:</strong>
+              <p>No timers, no lives, no coins! Use Undo whenever you want.</p>
             </div>
           </div>
         </div>
-        <button class="btn-primary" data-action="close-modal">GOT IT, LET'S PLAY!</button>
+        <button class="btn-main-action" data-action="close-modal">PLAY NOW!</button>
       </div>
     </div>
 
-    <!-- GRAND MASTER CELEBRATION (LEVEL 100 COMPLETE) -->
-    <div id="modal-grand-master" class="modal-backdrop">
-      <div class="modal-dialog grand-dialog">
-        <div class="crown-glow">👑</div>
-        <h2 class="dialog-title gold-title">100 LEVELS COMPLETE!</h2>
-        <div class="master-subtitle">🏆 MASTER OF COLOR FLOW 🏆</div>
-        <p class="master-message">
-          Sensational! You completed every single one of the 100 water sort puzzles across all 20 unique worlds!
+    <!-- LEVEL 100 GRAND MASTER MODAL -->
+    <div id="modal-grand-master" class="modal-overlay">
+      <div class="modal-card grand-card">
+        <div class="crown-icon">👑</div>
+        <h2 class="modal-title gold-title">100 LEVELS COMPLETE!</h2>
+        <div class="grand-badge">🏆 GRAND MASTER OF WATER SORT 🏆</div>
+        <p class="grand-desc">
+          Astounding achievement! You solved all 100 water sort puzzles across all 20 unique worlds!
         </p>
-        <button class="btn-primary" data-action="levels">🗺️ LEVEL SELECTION</button>
+        <button class="btn-main-action" data-action="open-levels">🗺️ BROWSE ALL LEVELS</button>
       </div>
     </div>
 
