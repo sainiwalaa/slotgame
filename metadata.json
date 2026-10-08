@@ -1,6 +1,6 @@
 {
   "name": "Color Flow",
-  "description": "100-level water color sort puzzle game with fluid pouring pipe animations, undo moves, and 20 themed visual worlds.",
+  "description": "100+ level Color Flow Puzzle Adventure featuring Water Sort, Screw & Bolt Sort, Ball Sort, Gem Sort, Donut Sort, Alchemy Potions, Cyber Neon Cells, Gears, Cosmic Orbs, and Grand Master Hybrid.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

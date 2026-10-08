@@ -1,5 +1,6 @@
-/* Color Flow – Water Sort Puzzle 
-   Modern, Highly Responsive, Pure Casual Puzzle Stylesheet */
+/* Color Flow Puzzle Adventure
+   Complete 10-World Multi-Mechanic Stylesheet
+   Mobile-First (100dvh/100dvw), Auto-Responsive & High Polish */
 
 :root {
   --bg-gradient: linear-gradient(135deg, #07192f 0%, #0c2d48 50%, #145da0 100%);
@@ -7,15 +8,14 @@
   --accent-glow: rgba(56, 189, 248, 0.45);
   --glass-bg: rgba(255, 255, 255, 0.1);
   --glass-border: rgba(255, 255, 255, 0.35);
-  --glass-highlight: rgba(255, 255, 255, 0.7);
   --text-main: #f8fafc;
   --text-muted: #94a3b8;
-  --card-bg: rgba(15, 23, 42, 0.92);
+  --card-bg: rgba(15, 23, 42, 0.94);
   --safe-top: env(safe-area-inset-top, 0px);
   --safe-bottom: env(safe-area-inset-bottom, 0px);
 }
 
-/* Global Reset & Strict Mobile Touch Constraints */
+/* Global Reset & Strict Mobile Constraints */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -27,8 +27,10 @@
 }
 
 html, body {
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  width: 100dvw;
+  height: 100vh;
+  height: 100dvh;
   overflow: hidden;
   background-color: #050b14;
   color: var(--text-main);
@@ -36,7 +38,7 @@ html, body {
   touch-action: manipulation;
 }
 
-/* Canvas Overlay for Celebrations */
+/* FX / Fireworks Canvas */
 #fx-canvas {
   position: fixed;
   inset: 0;
@@ -46,30 +48,31 @@ html, body {
   z-index: 100;
 }
 
-/* Main App Wrapper */
+/* Fullscreen Responsive Game Container */
 .game-container {
   position: relative;
   width: 100%;
+  max-width: 580px;
   height: 100%;
-  max-width: 520px;
+  height: 100dvh;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   background: var(--bg-gradient);
   transition: background 0.7s cubic-bezier(0.4, 0, 0.2, 1);
-  padding: calc(var(--safe-top) + 8px) 12px calc(var(--safe-bottom) + 10px) 12px;
+  padding: calc(var(--safe-top) + 6px) 12px calc(var(--safe-bottom) + 8px) 12px;
   overflow: hidden;
 }
 
 /* ==========================================================================
-   TOP BAR & HEADER
+   TOP BAR & METADATA
    ========================================================================== */
 .game-top-bar {
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  padding-bottom: 6px;
+  padding-bottom: 4px;
   flex-shrink: 0;
 }
 
@@ -96,7 +99,7 @@ html, body {
 
 .btn-ctrl:active {
   transform: scale(0.92);
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(56, 189, 248, 0.2);
 }
 
 .ctrl-icon {
@@ -105,86 +108,108 @@ html, body {
 }
 
 .level-meta {
-  text-align: center;
-}
-
-.brand-title {
-  font-size: 0.72rem;
-  font-weight: 900;
-  letter-spacing: 2.5px;
-  color: var(--accent-color);
-  opacity: 0.95;
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
-}
-
-.level-badge {
-  font-size: 1.25rem;
-  font-weight: 900;
-  letter-spacing: 0.5px;
-  color: #ffffff;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
-}
-
-.world-tag {
-  font-size: 0.72rem;
-  font-weight: 700;
-  color: #facc15;
-  background: rgba(15, 23, 42, 0.6);
-  padding: 1px 8px;
-  border-radius: 10px;
-  display: inline-block;
-  margin-top: 2px;
-}
-
-.moves-badge {
-  background: rgba(15, 23, 42, 0.75);
-  border: 1.5px solid rgba(255, 255, 255, 0.16);
-  border-radius: 14px;
-  padding: 4px 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  flex: 1;
+  padding: 0 8px;
+}
+
+.brand-tag {
+  font-size: 0.65rem;
+  font-weight: 900;
+  letter-spacing: 1.5px;
+  color: var(--accent-color);
+  text-transform: uppercase;
+  margin-bottom: 1px;
+}
+
+.level-badge {
+  font-size: 1.15rem;
+  font-weight: 900;
+  letter-spacing: 0.5px;
+  color: #ffffff;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+}
+
+.world-tag {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.world-progress-bar {
+  width: 120px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-top: 3px;
+}
+
+.world-progress-fill {
+  height: 100%;
+  background: var(--accent-color);
+  border-radius: 4px;
+  transition: width 0.3s ease;
+  box-shadow: 0 0 8px var(--accent-glow);
+}
+
+.moves-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(15, 23, 42, 0.75);
+  border: 1.5px solid rgba(255, 255, 255, 0.16);
+  border-radius: 13px;
+  padding: 3px 10px;
   min-width: 58px;
 }
 
 .moves-label {
   font-size: 0.58rem;
   font-weight: 800;
+  letter-spacing: 1px;
   color: var(--text-muted);
-  letter-spacing: 0.5px;
 }
 
 .moves-count {
-  font-size: 1.15rem;
+  font-size: 1.05rem;
   font-weight: 900;
-  color: #ffffff;
+  color: var(--accent-color);
   line-height: 1.1;
 }
 
 /* ==========================================================================
-   QUICK ACTION CONTROLS (UNDO, RESTART, RULES)
+   ACTION CONTROLS BAR (UNDO, RESTART, HINT, RULES)
    ========================================================================== */
 .action-bar {
   display: flex;
+  align-items: center;
   justify-content: center;
-  gap: 10px;
-  margin: 4px 0 8px 0;
+  gap: 8px;
+  width: 100%;
+  margin: 4px 0 6px 0;
   flex-shrink: 0;
 }
 
 .btn-action {
   flex: 1;
-  max-width: 120px;
+  max-width: 105px;
   height: 38px;
   border-radius: 12px;
-  background: rgba(15, 23, 42, 0.7);
+  background: rgba(15, 23, 42, 0.72);
   border: 1.5px solid rgba(255, 255, 255, 0.16);
   color: var(--text-main);
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
-  font-size: 0.86rem;
+  gap: 5px;
+  font-size: 0.82rem;
   font-weight: 800;
   cursor: pointer;
   touch-action: manipulation;
@@ -198,7 +223,8 @@ html, body {
 }
 
 .act-icon {
-  font-size: 1.1rem;
+  font-size: 1.05rem;
+  line-height: 1;
 }
 
 /* Guidance Toast */
@@ -213,22 +239,29 @@ html, body {
 
 .toast-message {
   display: inline-block;
-  padding: 5px 16px;
-  background: rgba(15, 23, 42, 0.8);
+  padding: 4px 16px;
+  background: rgba(15, 23, 42, 0.85);
   backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: 20px;
   font-size: 0.8rem;
   font-weight: 700;
   color: var(--text-main);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
   transition: color 0.2s, border-color 0.2s;
+  text-align: center;
 }
 
 .toast-message.error {
   color: #f87171;
   border-color: #ef4444;
   animation: shakeToast 0.35s ease-in-out;
+}
+
+.toast-message.hint {
+  color: #fde047;
+  border-color: #facc15;
+  box-shadow: 0 0 12px rgba(250, 204, 21, 0.4);
 }
 
 @keyframes shakeToast {
@@ -238,7 +271,7 @@ html, body {
 }
 
 /* ==========================================================================
-   MAIN GAME BOARD & BOTTLES VIEWPORT
+   MAIN GAME BOARD & PUZZLE STAGE
    ========================================================================== */
 .board-area {
   flex: 1;
@@ -247,12 +280,13 @@ html, body {
   align-items: center;
   justify-content: center;
   width: 100%;
-  min-height: 280px;
+  min-height: 260px;
   overflow: visible;
+  touch-action: none;
 }
 
-/* SVG Pipe Stream Overlay connecting bottle mouths during pour */
-.pour-stream-svg {
+/* Dynamic SVG Stream / Trajectory Overlay */
+.stream-overlay-svg {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -264,7 +298,7 @@ html, body {
 .stream-path {
   fill: none;
   stroke-linecap: round;
-  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.5));
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.6));
   animation: streamDash 0.5s linear infinite;
 }
 
@@ -272,55 +306,69 @@ html, body {
   to { stroke-dashoffset: -32; }
 }
 
-/* Bottles Grid Container */
-.bottles-container {
+/* Primary Puzzle Containers Grid */
+.puzzle-stage {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: 22px 14px;
+  gap: 16px 14px;
   width: 100%;
   max-height: 100%;
   z-index: 10;
+  padding: 4px;
+}
+
+/* When board has 7-10 containers, adaptively scale gap */
+.puzzle-stage.dense {
+  gap: 12px 10px;
+}
+
+/* Flying projectile object during moves */
+.flying-projectile {
+  position: absolute;
+  pointer-events: none;
+  z-index: 80;
+  transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+  will-change: transform;
 }
 
 /* ==========================================================================
-   INDIVIDUAL GLASS BOTTLE
+   UNIVERSAL CONTAINER BASE
    ========================================================================== */
-.bottle-node {
+.slot-container {
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   cursor: pointer;
   touch-action: manipulation;
-  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.25s;
+  transition: transform 0.26s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.25s;
   will-change: transform;
 }
 
-/* Number Label under the bottle */
-.bottle-label {
+.container-label {
   font-size: 0.72rem;
   font-weight: 800;
   color: var(--text-muted);
-  margin-top: 6px;
+  margin-top: 5px;
   letter-spacing: 0.5px;
   transition: color 0.2s;
 }
 
-/* Selected Bottle State: Lifts up and glows */
-.bottle-node.selected {
+/* Selected state: lifts and glows */
+.slot-container.selected {
   transform: translateY(-24px);
   filter: drop-shadow(0 14px 22px var(--accent-glow));
 }
 
-.bottle-node.selected .bottle-label {
+.slot-container.selected .container-label {
   color: var(--accent-color);
   font-weight: 900;
 }
 
-/* Valid Target Destination: Soft green pulse */
-.bottle-node.valid-target {
+/* Valid Target: soft pulse glow */
+.slot-container.valid-target {
   animation: targetGlow 1.2s infinite alternate ease-in-out;
 }
 
@@ -329,8 +377,26 @@ html, body {
   100% { filter: drop-shadow(0 0 16px rgba(16, 185, 129, 0.9)); }
 }
 
-/* Invalid Target Click Shake */
-.bottle-node.shake-invalid {
+/* Hint highlight */
+.slot-container.hint-source {
+  animation: hintSourcePulse 0.9s infinite alternate;
+}
+.slot-container.hint-dest {
+  animation: hintDestPulse 0.9s infinite alternate;
+}
+
+@keyframes hintSourcePulse {
+  0% { filter: drop-shadow(0 0 4px #eab308); }
+  100% { filter: drop-shadow(0 0 18px #facc15); transform: translateY(-12px); }
+}
+
+@keyframes hintDestPulse {
+  0% { filter: drop-shadow(0 0 4px #10b981); }
+  100% { filter: drop-shadow(0 0 18px #34d399); }
+}
+
+/* Invalid move shake */
+.slot-container.shake-invalid {
   animation: shakeInvalid 0.4s ease-in-out;
 }
 
@@ -340,129 +406,23 @@ html, body {
   40%, 80% { transform: translateX(8px); }
 }
 
-/* Pouring Tilt States */
-.bottle-node.tilting-left {
+/* Tilting transforms for liquid pours */
+.slot-container.tilting-left {
   transform: translateY(-26px) rotate(-42deg);
   transform-origin: top left;
 }
 
-.bottle-node.tilting-right {
+.slot-container.tilting-right {
   transform: translateY(-26px) rotate(42deg);
   transform-origin: top right;
 }
 
-/* Completed Bottle Sealed Golden Glow */
-.bottle-node.completed .bottle-glass {
-  border-color: #facc15;
-  box-shadow: 0 0 18px rgba(250, 204, 21, 0.5), inset 0 0 12px rgba(250, 204, 21, 0.35);
+/* Completed celebration badge */
+.slot-container.completed .vessel-shell {
+  border-color: #facc15 !important;
+  box-shadow: 0 0 20px rgba(250, 204, 21, 0.55), inset 0 0 12px rgba(250, 204, 21, 0.35) !important;
 }
 
-.bottle-node.completed .bottle-cap {
-  background: linear-gradient(180deg, #facc15, #ca8a04);
-  border: 1px solid #fef08a;
-  transform: translateY(0);
-}
-
-/* Bottle Cap / Stopper */
-.bottle-cap {
-  width: 34px;
-  height: 10px;
-  background: linear-gradient(180deg, #d97706, #92400e);
-  border-radius: 4px 4px 1px 1px;
-  margin-bottom: -2px;
-  z-index: 5;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
-  transition: transform 0.3s ease, background 0.3s;
-}
-
-.bottle-node.selected .bottle-cap {
-  transform: translateY(-9px);
-}
-
-/* Glass Tube Vessel */
-.bottle-glass {
-  position: relative;
-  width: 60px;
-  height: 176px;
-  background: var(--glass-bg);
-  backdrop-filter: blur(6px);
-  border: 2.5px solid var(--glass-border);
-  border-top: none;
-  border-radius: 0 0 28px 28px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column-reverse;
-  box-shadow: inset 0 0 16px rgba(255, 255, 255, 0.12), 0 10px 26px rgba(0, 0, 0, 0.45);
-  transition: border-color 0.3s, box-shadow 0.3s;
-}
-
-/* Glass Mouth Lip */
-.bottle-glass::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -2px;
-  right: -2px;
-  height: 6px;
-  background: rgba(255, 255, 255, 0.3);
-  border-radius: 4px;
-}
-
-/* Vertical Specular Glass Highlight Glare */
-.bottle-glass::after {
-  content: "";
-  position: absolute;
-  top: 4px;
-  left: 6px;
-  width: 6px;
-  height: calc(100% - 18px);
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.65), rgba(255, 255, 255, 0.05));
-  border-radius: 4px;
-  pointer-events: none;
-  z-index: 20;
-}
-
-/* Liquid Layer Segment */
-.liquid-layer {
-  width: 100%;
-  height: 25%;
-  position: relative;
-  box-shadow: inset 0 -3px 6px rgba(0, 0, 0, 0.25);
-  transition: height 0.38s cubic-bezier(0.4, 0, 0.2, 1);
-  overflow: hidden;
-}
-
-/* Meniscus Curve on the topmost liquid layer */
-.liquid-layer.top-layer::before {
-  content: "";
-  position: absolute;
-  top: -3px;
-  left: 0;
-  width: 100%;
-  height: 6px;
-  background: inherit;
-  filter: brightness(1.22);
-  border-radius: 50%;
-  box-shadow: inset 0 1px 3px rgba(255, 255, 255, 0.4);
-  z-index: 10;
-}
-
-/* Floating Bubbles */
-.bubble-dot {
-  position: absolute;
-  background: rgba(255, 255, 255, 0.5);
-  border-radius: 50%;
-  pointer-events: none;
-  animation: floatBubble 2.2s infinite ease-in;
-}
-
-@keyframes floatBubble {
-  0% { transform: translateY(0) scale(0.6); opacity: 0; }
-  50% { opacity: 0.85; }
-  100% { transform: translateY(-28px) scale(1.1); opacity: 0; }
-}
-
-/* Completed Bottle Trophy / Star Flare */
 .complete-star {
   position: absolute;
   top: 42%;
@@ -482,7 +442,365 @@ html, body {
   100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
 }
 
-/* Footer */
+/* Base Vessel Shell Size */
+.vessel-shell {
+  position: relative;
+  width: 58px;
+  height: 174px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column-reverse;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+/* ==========================================================================
+   WORLD 1: WATER SORT (CLASSIC GLASS BOTTLE)
+   ========================================================================== */
+.vessel-water-bottle {
+  background: rgba(255, 255, 255, 0.09);
+  backdrop-filter: blur(6px);
+  border: 2.5px solid rgba(255, 255, 255, 0.38);
+  border-top: none;
+  border-radius: 0 0 28px 28px;
+  box-shadow: inset 0 0 16px rgba(255, 255, 255, 0.12), 0 10px 24px rgba(0, 0, 0, 0.45);
+}
+
+.vessel-water-bottle::after {
+  content: "";
+  position: absolute;
+  top: 4px;
+  left: 5px;
+  width: 5px;
+  height: calc(100% - 16px);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.05));
+  border-radius: 3px;
+  pointer-events: none;
+  z-index: 20;
+}
+
+.liquid-layer {
+  width: 100%;
+  height: 25%;
+  position: relative;
+  box-shadow: inset 0 -3px 6px rgba(0, 0, 0, 0.25);
+  transition: height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+}
+
+.liquid-layer.top-layer::before {
+  content: "";
+  position: absolute;
+  top: -3px;
+  left: 0;
+  width: 100%;
+  height: 6px;
+  background: inherit;
+  filter: brightness(1.25);
+  border-radius: 50%;
+  box-shadow: inset 0 1px 3px rgba(255, 255, 255, 0.4);
+  z-index: 10;
+}
+
+.bubble-dot {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.55);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: floatBubble 2.2s infinite ease-in;
+}
+
+@keyframes floatBubble {
+  0% { transform: translateY(0) scale(0.6); opacity: 0; }
+  50% { opacity: 0.85; }
+  100% { transform: translateY(-28px) scale(1.1); opacity: 0; }
+}
+
+/* ==========================================================================
+   WORLD 2: SCREW & BOLT SORT
+   ========================================================================== */
+.vessel-screw-tray {
+  width: 62px;
+  height: 176px;
+  background: linear-gradient(180deg, #1f2937 0%, #111827 100%);
+  border: 2.5px solid #4b5563;
+  border-radius: 12px;
+  box-shadow: inset 0 0 14px rgba(0, 0, 0, 0.8), 0 8px 20px rgba(0, 0, 0, 0.5);
+  padding: 4px;
+  gap: 3px;
+}
+
+.screw-item {
+  width: 100%;
+  height: 38px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 0 6px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4), inset 0 1px 2px rgba(255, 255, 255, 0.4);
+  position: relative;
+  transition: transform 0.25s ease;
+}
+
+.screw-glyph {
+  font-size: 1.45rem;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.45));
+}
+
+.screw-threads {
+  width: 14px;
+  height: 16px;
+  border-left: 2px dashed rgba(255, 255, 255, 0.5);
+  border-right: 2px dashed rgba(0, 0, 0, 0.4);
+}
+
+/* ==========================================================================
+   WORLD 3: COLOR BALL SORT (GLASS TEST TUBE & BOUNCY SPHERES)
+   ========================================================================== */
+.vessel-ball-tube {
+  width: 58px;
+  height: 176px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 2.5px solid rgba(255, 255, 255, 0.4);
+  border-top: none;
+  border-radius: 0 0 28px 28px;
+  align-items: center;
+  padding: 4px 0 6px 0;
+  gap: 2px;
+}
+
+.ball-item {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  position: relative;
+  box-shadow: inset -4px -4px 8px rgba(0, 0, 0, 0.5), inset 3px 3px 6px rgba(255, 255, 255, 0.65), 0 4px 10px rgba(0, 0, 0, 0.35);
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Specular reflection on ball */
+.ball-item::after {
+  content: "";
+  position: absolute;
+  top: 6px;
+  left: 8px;
+  width: 10px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.75);
+  transform: rotate(-35deg);
+}
+
+/* ==========================================================================
+   WORLD 4: CRYSTAL GEM & SAND SORT (FACETED VIALS & GEMS)
+   ========================================================================== */
+.vessel-gem-jar {
+  width: 60px;
+  height: 176px;
+  background: linear-gradient(180deg, rgba(30, 27, 75, 0.5), rgba(49, 46, 129, 0.4));
+  border: 2px solid #818cf8;
+  border-radius: 14px;
+  box-shadow: inset 0 0 16px rgba(129, 140, 248, 0.3), 0 8px 22px rgba(0, 0, 0, 0.5);
+  padding: 4px;
+  gap: 3px;
+  align-items: center;
+}
+
+.gem-item {
+  width: 100%;
+  height: 38px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  box-shadow: inset -2px -2px 6px rgba(0, 0, 0, 0.4), inset 2px 2px 6px rgba(255, 255, 255, 0.6), 0 4px 8px rgba(0, 0, 0, 0.3);
+  font-size: 1.4rem;
+}
+
+.gem-sparkle {
+  animation: gemGlint 1.8s infinite alternate ease-in-out;
+}
+
+@keyframes gemGlint {
+  0% { transform: scale(0.9); opacity: 0.8; }
+  100% { transform: scale(1.15); opacity: 1; }
+}
+
+/* ==========================================================================
+   WORLD 5: SWEET CANDY & DONUT SORT (PASTRY JARS & DONUTS)
+   ========================================================================== */
+.vessel-sweet-jar {
+  width: 62px;
+  height: 176px;
+  background: linear-gradient(180deg, rgba(74, 4, 78, 0.3), rgba(112, 26, 117, 0.25));
+  border: 2.5px solid #f472b6;
+  border-radius: 16px;
+  box-shadow: inset 0 0 14px rgba(244, 114, 182, 0.25), 0 8px 20px rgba(0, 0, 0, 0.45);
+  padding: 4px;
+  gap: 3px;
+  align-items: center;
+}
+
+.donut-item {
+  width: 100%;
+  height: 38px;
+  border-radius: 19px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  box-shadow: inset -2px -2px 5px rgba(0, 0, 0, 0.35), inset 2px 2px 5px rgba(255, 255, 255, 0.55), 0 4px 8px rgba(0, 0, 0, 0.3);
+  font-size: 1.35rem;
+}
+
+/* ==========================================================================
+   WORLD 6: ALCHEMY POTION & MAGIC RUNES (ALCHEMIST FLASKS)
+   ========================================================================== */
+.vessel-potion-flask {
+  width: 62px;
+  height: 176px;
+  background: linear-gradient(180deg, rgba(46, 16, 101, 0.4), rgba(59, 7, 100, 0.35));
+  border: 2.5px solid #c084fc;
+  border-radius: 0 0 24px 24px;
+  box-shadow: inset 0 0 16px rgba(192, 132, 252, 0.3), 0 10px 24px rgba(0, 0, 0, 0.5);
+  padding: 3px;
+  gap: 3px;
+}
+
+.potion-layer {
+  width: 100%;
+  height: 38px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 0 6px;
+  box-shadow: inset 0 0 8px rgba(255, 255, 255, 0.4), 0 3px 6px rgba(0, 0, 0, 0.35);
+  font-size: 1.3rem;
+  position: relative;
+}
+
+.potion-aura {
+  animation: magicPulse 2s infinite alternate ease-in-out;
+}
+
+@keyframes magicPulse {
+  0% { filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.6)); }
+  100% { filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.9)); }
+}
+
+/* ==========================================================================
+   WORLD 7: CYBER NEON PLASMA CELLS (ENERGY CELLS)
+   ========================================================================== */
+.vessel-cyber-cell {
+  width: 62px;
+  height: 176px;
+  background: linear-gradient(180deg, #022c22 0%, #064e3b 100%);
+  border: 2.5px solid #10b981;
+  border-radius: 12px;
+  box-shadow: inset 0 0 18px rgba(16, 185, 129, 0.4), 0 0 16px rgba(16, 185, 129, 0.25);
+  padding: 4px;
+  gap: 3px;
+}
+
+.cyber-core {
+  width: 100%;
+  height: 38px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.5), 0 2px 6px rgba(0, 0, 0, 0.5);
+  font-size: 1.35rem;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+/* ==========================================================================
+   WORLD 8: MECHANICAL GEARS & CLOCKWORK (STEAMPUNK PILLARS)
+   ========================================================================== */
+.vessel-gear-column {
+  width: 64px;
+  height: 176px;
+  background: linear-gradient(180deg, #292524 0%, #1c1917 100%);
+  border: 2.5px solid #d97706;
+  border-radius: 12px;
+  box-shadow: inset 0 0 14px rgba(0, 0, 0, 0.85), 0 8px 20px rgba(0, 0, 0, 0.5);
+  padding: 4px;
+  gap: 3px;
+  align-items: center;
+}
+
+.gear-cog-item {
+  width: 100%;
+  height: 38px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  box-shadow: inset -2px -2px 4px rgba(0, 0, 0, 0.5), inset 2px 2px 4px rgba(255, 255, 255, 0.55), 0 3px 6px rgba(0, 0, 0, 0.4);
+  font-size: 1.45rem;
+}
+
+/* ==========================================================================
+   WORLD 9: COSMIC NEBULA & STAR CORES (ANTI-GRAV SPACE CAPSULES)
+   ========================================================================== */
+.vessel-cosmic-pod {
+  width: 62px;
+  height: 176px;
+  background: linear-gradient(180deg, #18181b 0%, #3b0764 100%);
+  border: 2.5px solid #a855f7;
+  border-radius: 20px;
+  box-shadow: inset 0 0 18px rgba(168, 85, 247, 0.4), 0 0 20px rgba(168, 85, 247, 0.3);
+  padding: 4px;
+  gap: 3px;
+  align-items: center;
+}
+
+.cosmic-orb {
+  width: 100%;
+  height: 38px;
+  border-radius: 19px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  box-shadow: inset -3px -3px 6px rgba(0, 0, 0, 0.5), inset 2px 2px 6px rgba(255, 255, 255, 0.6), 0 4px 10px rgba(0, 0, 0, 0.4);
+  font-size: 1.35rem;
+}
+
+/* ==========================================================================
+   WORLD 10: GRAND MASTER HYBRID ADVENTURE (GILDED ROYAL CHALICES)
+   ========================================================================== */
+.vessel-master-relic {
+  width: 64px;
+  height: 176px;
+  background: linear-gradient(180deg, #311042 0%, #1e1b4b 100%);
+  border: 2.5px solid #facc15;
+  border-radius: 14px;
+  box-shadow: inset 0 0 20px rgba(250, 204, 21, 0.45), 0 0 24px rgba(250, 204, 21, 0.35);
+  padding: 4px;
+  gap: 3px;
+  align-items: center;
+}
+
+.relic-item {
+  width: 100%;
+  height: 38px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  box-shadow: inset -2px -2px 5px rgba(0, 0, 0, 0.4), inset 2px 2px 5px rgba(255, 255, 255, 0.65), 0 4px 8px rgba(0, 0, 0, 0.4);
+  font-size: 1.45rem;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+/* ==========================================================================
+   FOOTER
+   ========================================================================== */
 .game-footer {
   width: 100%;
   text-align: center;
@@ -493,16 +811,16 @@ html, body {
 .footer-tip {
   font-size: 0.75rem;
   color: var(--text-muted);
-  opacity: 0.85;
+  opacity: 0.9;
 }
 
 /* ==========================================================================
-   MODAL OVERLAYS (VICTORY, 100 LEVELS, HOW TO PLAY)
+   MODAL OVERLAYS (VICTORY, WORLD UNLOCK, 100 LEVELS, RULES)
    ========================================================================== */
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.84);
+  background: rgba(0, 0, 0, 0.85);
   backdrop-filter: blur(8px);
   display: none;
   align-items: center;
@@ -517,7 +835,7 @@ html, body {
 
 .modal-card {
   width: 100%;
-  max-width: 380px;
+  max-width: 400px;
   background: var(--card-bg);
   border: 1.5px solid rgba(255, 255, 255, 0.18);
   border-radius: 24px;
@@ -543,14 +861,14 @@ html, body {
 }
 
 .modal-title {
-  font-size: 1.6rem;
+  font-size: 1.55rem;
   font-weight: 900;
   color: #ffffff;
 }
 
 .stars-row {
   font-size: 2.2rem;
-  margin: 10px 0;
+  margin: 8px 0;
   display: flex;
   justify-content: center;
   gap: 8px;
@@ -560,10 +878,10 @@ html, body {
   background: rgba(30, 41, 59, 0.65);
   border-radius: 14px;
   padding: 12px 16px;
-  margin: 12px 0 16px 0;
+  margin: 10px 0 14px 0;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 7px;
 }
 
 .stat-line {
@@ -585,7 +903,7 @@ html, body {
   border: none;
   background: linear-gradient(135deg, #0ea5e9, #0284c7);
   color: #ffffff;
-  font-size: 1.1rem;
+  font-size: 1.08rem;
   font-weight: 800;
   letter-spacing: 0.5px;
   cursor: pointer;
@@ -615,7 +933,42 @@ html, body {
 }
 
 /* ==========================================================================
-   LEVELS MODAL (1 TO 100)
+   WORLD UNLOCKED CELEBRATION MODAL
+   ========================================================================== */
+.world-unlock-card {
+  border-color: #facc15;
+  background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%);
+  box-shadow: 0 0 50px rgba(250, 204, 21, 0.4);
+}
+
+.world-unlock-icon {
+  font-size: 4rem;
+  margin-bottom: 4px;
+  animation: unlockBounce 1.5s infinite ease-in-out;
+}
+
+@keyframes unlockBounce {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-10px) scale(1.1); }
+}
+
+.world-unlock-badge {
+  font-size: 0.78rem;
+  font-weight: 900;
+  color: #facc15;
+  letter-spacing: 1.5px;
+  margin-bottom: 6px;
+}
+
+.world-unlock-desc {
+  font-size: 0.88rem;
+  color: #e2e8f0;
+  line-height: 1.45;
+  margin: 10px 0 18px 0;
+}
+
+/* ==========================================================================
+   LEVELS & WORLDS SELECTOR MODAL
    ========================================================================== */
 .levels-card {
   max-height: 85vh;
@@ -642,6 +995,7 @@ html, body {
   color: var(--text-muted);
   font-size: 1.3rem;
   cursor: pointer;
+  padding: 4px;
 }
 
 .world-tabs-bar {
@@ -784,7 +1138,9 @@ html, body {
   color: #ffffff;
 }
 
-/* Grand Master Modal */
+/* ==========================================================================
+   GRAND MASTER MODAL & ENDLESS MODE
+   ========================================================================== */
 .grand-card {
   border-color: #facc15;
   background: linear-gradient(135deg, #1e1b4b 0%, #311042 100%);
@@ -818,5 +1174,16 @@ html, body {
   font-size: 0.88rem;
   color: #e2e8f0;
   line-height: 1.4;
-  margin: 12px 0 18px 0;
+  margin: 10px 0 14px 0;
+}
+
+.endless-unlocked-banner {
+  background: rgba(250, 204, 21, 0.2);
+  border: 1px dashed #facc15;
+  border-radius: 12px;
+  padding: 8px;
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: #fef08a;
+  margin-bottom: 16px;
 }
