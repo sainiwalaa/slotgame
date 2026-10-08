@@ -268,7 +268,7 @@
   class ParticleEngine {
     constructor(canvasId) {
       this.canvas = document.getElementById(canvasId);
-      this.ctx = this.canvas ? this.canvas.getContext('2d') : null;
+      this.ctx = this.canvas ? this.canvas.getContext('2d', { willReadFrequently: true }) : null;
       this.particles = [];
       this.active = false;
       this.resize();
@@ -615,14 +615,36 @@
       label.textContent = `#${idx + 1}`;
       slot.appendChild(label);
 
-      // Touch & Click Event Listener with event prevention
-      const handleTap = (e) => {
-        e.preventDefault();
-        e.stopPropagation();
+      // Animated Guide Finger on Level 1 start
+      if (state.currentLevel === 1 && state.moveCount === 0) {
+        if (state.selectedIdx === null && idx === 0) {
+          const finger = document.createElement('div');
+          finger.className = 'start-guide-finger';
+          finger.textContent = '👆';
+          slot.appendChild(finger);
+        } else if (state.selectedIdx === 0 && idx === 2) {
+          const finger = document.createElement('div');
+          finger.className = 'start-guide-finger';
+          finger.textContent = '👇';
+          slot.appendChild(finger);
+        }
+      }
+
+      // Robust multi-device tap & click handler
+      let lastTap = 0;
+      const onSlotTap = (e) => {
+        if (e) {
+          e.stopPropagation();
+        }
+        const now = Date.now();
+        if (now - lastTap < 200) return;
+        lastTap = now;
         onContainerTapped(idx);
       };
 
-      slot.addEventListener('pointerdown', handleTap, { passive: false });
+      slot.addEventListener('click', onSlotTap);
+      slot.addEventListener('touchend', onSlotTap, { passive: true });
+      slot.addEventListener('pointerup', onSlotTap, { passive: true });
 
       DOM.puzzleStage.appendChild(slot);
     });
@@ -1298,6 +1320,21 @@
 
     // Prevent pinch-to-zoom and unwanted double tap zoom
     document.addEventListener('gesturestart', (e) => e.preventDefault(), { passive: false });
+
+    // Fallback: If player taps anywhere on the board area when no container is selected yet
+    if (DOM.boardArea) {
+      DOM.boardArea.addEventListener('click', (e) => {
+        if (e.target.closest('.slot-container') || e.target.closest('button')) return;
+        if (state.selectedIdx === null && state.containers.length > 0) {
+          for (let i = 0; i < state.containers.length; i++) {
+            if (state.containers[i].length > 0) {
+              onContainerTapped(i);
+              break;
+            }
+          }
+        }
+      });
+    }
 
     // Load initial level
     loadLevel(state.unlockedLevel);
