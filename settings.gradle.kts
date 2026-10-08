@@ -22,6 +22,6 @@ dependencyResolutionManagement {
   }
 }
 
-rootProject.name = "Color Spin Match"
+rootProject.name = "Color Flow"
 
 include(":app")
