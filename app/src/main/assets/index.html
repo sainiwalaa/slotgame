@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Color Spin Match – 100 Levels</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Canvas for Celebration Particles & Fireworks -->
+  <canvas id="particles-canvas"></canvas>
+
+  <!-- Main Container -->
+  <div id="app" class="app-container">
+
+    <!-- HOME SCREEN -->
+    <section id="screen-home" class="screen active">
+      <div class="home-decorations">
+        <div class="decor-orb orb-1"></div>
+        <div class="decor-orb orb-2"></div>
+        <div class="decor-orb orb-3"></div>
+      </div>
+      <div class="home-content">
+        <div class="game-badge">PUZZLE ARCADE • CASUAL</div>
+        <div class="logo-group">
+          <div class="logo-icon-spin">🎰</div>
+          <h1 class="game-title">COLOR SPIN<br><span class="title-highlight">MATCH</span></h1>
+          <div class="level-tag">✨ 100 UNIQUE LEVELS ✨</div>
+        </div>
+
+        <div class="home-stats-card">
+          <div class="stat-pill">
+            <span class="pill-icon">🪙</span>
+            <span id="home-coins" class="pill-val">500</span>
+          </div>
+          <div class="stat-pill">
+            <span class="pill-icon">⭐</span>
+            <span id="home-stars" class="pill-val">0 / 300</span>
+          </div>
+          <div class="stat-pill">
+            <span class="pill-icon">🏆</span>
+            <span id="home-level-progress" class="pill-val">Level 1</span>
+          </div>
+        </div>
+
+        <div class="home-menu">
+          <button id="btn-play" class="btn-main pulse-btn" data-action="play">
+            <span class="btn-icon">▶️</span> PLAY NOW
+          </button>
+          <button id="btn-level-select" class="btn-sub" data-action="level-select">
+            <span class="btn-icon">🗺️</span> LEVEL SELECT (100)
+          </button>
+          <div class="home-row-btns">
+            <button id="btn-how-to-play" class="btn-icon-label" data-action="how-to-play">
+              <span>📖</span> How to Play
+            </button>
+            <button id="btn-sound-toggle-home" class="btn-icon-label" data-action="toggle-sound">
+              <span id="home-sound-icon">🔊</span> Sound: ON
+            </button>
+          </div>
+        </div>
+
+        <div class="safe-notice">
+          <span>🛡️ Pure casual puzzle game. 100% free virtual coins, no real gambling.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- LEVEL SELECT SCREEN -->
+    <section id="screen-level-select" class="screen">
+      <header class="top-nav">
+        <button class="nav-back-btn" data-action="home">← Home</button>
+        <h2 class="nav-title">Select Level (1–100)</h2>
+        <div class="nav-coins">
+          <span>🪙</span> <span class="nav-coin-val">500</span>
+        </div>
+      </header>
+
+      <!-- World Filter Bar -->
+      <div class="world-filter-scroll" id="world-filter-bar">
+        <!-- Dynamically injected worlds -->
+      </div>
+
+      <!-- Level Grid Container -->
+      <div class="level-grid-container" id="level-grid">
+        <!-- 100 Level cards rendered here -->
+      </div>
+    </section>
+
+    <!-- GAME SCREEN -->
+    <section id="screen-game" class="screen">
+      <!-- Game Top Header -->
+      <header class="game-header">
+        <div class="header-left">
+          <button class="btn-header-icon" id="btn-game-back" data-action="level-select" title="Level Select">🗺️</button>
+          <button class="btn-header-icon" id="btn-game-restart" data-action="restart" title="Restart Level">🔄</button>
+        </div>
+        <div class="level-indicator">
+          <span class="level-theme-badge" id="hud-theme-badge">💧 Water World</span>
+          <h2 class="level-number-text" id="hud-level-text">LEVEL 1 / 100</h2>
+        </div>
+        <div class="header-right">
+          <div class="coin-display">
+            <span>🪙</span> <span id="hud-coins">500</span>
+          </div>
+          <button class="btn-header-icon" id="btn-sound-toggle-game" data-action="toggle-sound">🔊</button>
+        </div>
+      </header>
+
+      <!-- Objective & Stats Bar -->
+      <div class="objective-bar">
+        <div class="obj-card obj-target">
+          <span class="obj-label">TARGET</span>
+          <span class="obj-val" id="hud-target">500</span>
+        </div>
+        <div class="obj-card obj-score">
+          <span class="obj-label">SCORE</span>
+          <span class="obj-val" id="hud-score">0</span>
+          <div class="score-progress-bar">
+            <div class="score-fill" id="hud-score-fill" style="width: 0%;"></div>
+          </div>
+        </div>
+        <div class="obj-card obj-moves">
+          <span class="obj-label">MOVES</span>
+          <span class="obj-val" id="hud-moves">10</span>
+        </div>
+      </div>
+
+      <!-- Combo & Special Status Banner -->
+      <div class="combo-banner-wrap">
+        <div class="combo-banner" id="combo-banner">COMBO x2!</div>
+        <div class="special-event-banner" id="event-banner">⚡ FIRE vs WATER!</div>
+      </div>
+
+      <!-- Slot Machine Cabinet Frame -->
+      <div class="slot-cabinet" id="slot-cabinet">
+        <div class="cabinet-rim-top">
+          <div class="rim-light l1"></div>
+          <div class="rim-light l2"></div>
+          <div class="rim-light l3"></div>
+          <div class="rim-light l4"></div>
+          <div class="rim-light l5"></div>
+        </div>
+
+        <!-- The Reels Viewport -->
+        <div class="reels-viewport" id="reels-viewport">
+          <div class="reels-container" id="reels-container">
+            <!-- 3 to 5 Reels dynamically injected -->
+          </div>
+          <!-- Win Payline Overlay Lines -->
+          <svg class="paylines-overlay" id="paylines-overlay"></svg>
+        </div>
+
+        <div class="cabinet-rim-bottom">
+          <span class="cabinet-marquee" id="cabinet-marquee">MATCH 3, 4 OR 5 TO WIN!</span>
+        </div>
+      </div>
+
+      <!-- In-Game Powerup Boosters -->
+      <div class="boosters-tray">
+        <button class="booster-btn" id="btn-boost-moves" data-booster="moves" title="Add 3 Moves (100 🪙)">
+          <span class="b-icon">⚡</span>
+          <span class="b-label">+3 Moves</span>
+          <span class="b-cost">100🪙</span>
+        </button>
+        <button class="booster-btn" id="btn-boost-wild" data-booster="wild" title="Rainbow Wild (200 🪙)">
+          <span class="b-icon">🌈</span>
+          <span class="b-label">Wild Reel</span>
+          <span class="b-cost">200🪙</span>
+        </button>
+        <button class="booster-btn" id="btn-boost-bomb" data-booster="bomb" title="Clear Obstacles (150 🪙)">
+          <span class="b-icon">💣</span>
+          <span class="b-label">Bomb Blast</span>
+          <span class="b-cost">150🪙</span>
+        </button>
+      </div>
+
+      <!-- Bottom Controls: Large Tactile Spin Button -->
+      <div class="spin-controls">
+        <button id="btn-auto-spin" class="btn-auto" data-action="toggle-auto">
+          <span>AUTO</span>
+          <small id="auto-status">OFF</small>
+        </button>
+        <button id="btn-spin" class="btn-spin-large" data-action="spin">
+          <div class="btn-spin-inner">
+            <span class="spin-icon">🎰</span>
+            <span class="spin-text">SPIN</span>
+          </div>
+        </button>
+        <div class="quick-info">
+          <span class="info-tip">SPACE: Spin</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- VICTORY MODAL -->
+    <div id="modal-victory" class="modal-overlay">
+      <div class="modal-card victory-card">
+        <div class="modal-header-icon">🎉</div>
+        <h2 class="modal-title" id="victory-title">LEVEL COMPLETE!</h2>
+        <div class="stars-row" id="victory-stars">
+          <span class="star-item">⭐</span>
+          <span class="star-item">⭐</span>
+          <span class="star-item">⭐</span>
+        </div>
+        <div class="modal-stats-list">
+          <div class="m-stat-row">
+            <span>Score Reached:</span>
+            <strong id="victory-score">1,250</strong>
+          </div>
+          <div class="m-stat-row">
+            <span>Moves Remaining:</span>
+            <strong id="victory-moves">4</strong>
+          </div>
+          <div class="m-stat-row">
+            <span>Coins Earned:</span>
+            <strong class="gold-text" id="victory-coins">+85 🪙</strong>
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button class="btn-modal-action btn-next-level" id="btn-next-level" data-action="next-level">
+            NEXT LEVEL ▶️
+          </button>
+          <div class="modal-sub-actions">
+            <button class="btn-modal-sub" id="btn-replay-level" data-action="restart">🔄 Replay</button>
+            <button class="btn-modal-sub" data-action="level-select">🗺️ Levels</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GAME OVER / OUT OF MOVES MODAL -->
+    <div id="modal-gameover" class="modal-overlay">
+      <div class="modal-card gameover-card">
+        <div class="modal-header-icon">💔</div>
+        <h2 class="modal-title">OUT OF MOVES!</h2>
+        <p class="modal-subtitle">You didn't reach the target score in time.</p>
+        <div class="modal-stats-list">
+          <div class="m-stat-row">
+            <span>Target:</span>
+            <strong id="gameover-target">1,000</strong>
+          </div>
+          <div class="m-stat-row">
+            <span>Your Score:</span>
+            <strong id="gameover-score">820</strong>
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button class="btn-modal-action btn-retry" data-action="restart">
+            🔄 TRY AGAIN
+          </button>
+          <button class="btn-modal-action btn-continue-moves" id="btn-buy-continue" data-booster="continue">
+            ⚡ +3 Moves (100 🪙)
+          </button>
+          <button class="btn-modal-sub" data-action="level-select">🗺️ Level Select</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- LEVEL 100 GRAND FINALE WINNER MODAL -->
+    <div id="modal-grand-finale" class="modal-overlay">
+      <div class="modal-card finale-card">
+        <div class="finale-crown">👑</div>
+        <h2 class="finale-title">100 LEVELS COMPLETE!</h2>
+        <div class="master-badge">🏆 COLOR MATCH MASTER 🏆</div>
+        <p class="finale-desc">
+          Astounding achievement! You mastered all 20 worlds, solved every water, screw, fire, ice, robot, candy, space, and cosmic slot challenge!
+        </p>
+        <div class="finale-coins">
+          <span>+5,000 BONUS COINS! 🪙</span>
+        </div>
+        <div class="modal-actions">
+          <button class="btn-modal-action btn-replay-all" data-action="home">
+            🏠 RETURN HOME
+          </button>
+          <button class="btn-modal-sub" data-action="level-select">
+            🗺️ VIEW ALL LEVELS
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- HOW TO PLAY MODAL -->
+    <div id="modal-how-to-play" class="modal-overlay">
+      <div class="modal-card how-card">
+        <div class="how-header">
+          <h3>📖 How to Play</h3>
+          <button class="close-modal-btn" data-action="close-modal">✕</button>
+        </div>
+        <div class="how-content-scroll">
+          <div class="how-section">
+            <h4>🎰 Spin & Match</h4>
+            <p>Press <strong>SPIN</strong> to roll the reels. Reels decelerate and stop one by one.</p>
+            <ul>
+              <li><strong>2 of a kind</strong> = Small Match (Points + Coins)</li>
+              <li><strong>3 of a kind</strong> = Match (High Points)</li>
+              <li><strong>4 of a kind</strong> = Super Match (+Combo Multiplier!)</li>
+              <li><strong>5 of a kind</strong> = Mega Match (+Screen Shake & Mega Bonus!)</li>
+            </ul>
+          </div>
+          <div class="how-section">
+            <h4>✨ Special Symbols</h4>
+            <div class="symbol-guide-grid">
+              <div class="guide-item"><span>🌈</span><strong>Wild</strong><p>Substitutes for any normal symbol.</p></div>
+              <div class="guide-item"><span>🌟</span><strong>Super Wild</strong><p>Matches any symbol with extra bonus points.</p></div>
+              <div class="guide-item"><span>💣</span><strong>Bomb</strong><p>Detonates and converts adjacent symbols.</p></div>
+              <div class="guide-item"><span>❓</span><strong>Mystery</strong><p>Reveals a high-tier symbol upon stopping.</p></div>
+              <div class="guide-item"><span>🔒</span><strong>Locked</strong><p>Must be matched to crack open.</p></div>
+              <div class="guide-item"><span>✖️2</span><strong>Multiplier</strong><p>Doubles all win scores on this spin.</p></div>
+            </div>
+          </div>
+          <div class="how-section">
+            <h4>🌍 20 Worlds & 100 Levels</h4>
+            <p>Every 5 levels brings a completely new world theme, colors, and mechanics:</p>
+            <p><strong>1-5:</strong> Water World • <strong>6-10:</strong> Machine World • <strong>11-15:</strong> Water + Machine • <strong>16-20:</strong> Fire World • <strong>21-25:</strong> Fire + Water • <strong>26-30:</strong> Ice World • <strong>31-35:</strong> Fire + Ice • <strong>36-40:</strong> Forest World • <strong>46-50:</strong> Candy World • <strong>56-60:</strong> Space World • <strong>76-80:</strong> Robot World • <strong>86-90:</strong> Rainbow World • <strong>91-100:</strong> Ultimate Finale!</p>
+          </div>
+          <div class="how-section">
+            <h4>⌨️ Controls & Shortcuts</h4>
+            <p><strong>Mobile:</strong> Tap the big SPIN button. Smooth responsive touch.<br>
+            <strong>PC:</strong> Press <strong>SPACE</strong> to spin, <strong>R</strong> to restart, <strong>ESC</strong> for menu.</p>
+          </div>
+        </div>
+        <button class="btn-modal-action" data-action="close-modal">GOT IT! LET'S PLAY</button>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

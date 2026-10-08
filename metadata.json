@@ -1,0 +1,6 @@
+{
+  "name": "Color Spin Match",
+  "description": "100-level casual color slot match puzzle game featuring 20 evolving world themes, special wild symbols, obstacles, and arcade reel mechanics.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
